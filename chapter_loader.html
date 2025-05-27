@@ -5,8 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">Loading Chapter...</title>
     <link rel="stylesheet" href="style.css">
+    <!-- MathJax configuration (same as the working test.html) -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$'], ['\\[','\\]']],
+        processEscapes: true
+      }
+    });
+    // Register a callback for when MathJax is fully initialized
+    MathJax.Hub.Register.StartupHook("End", function() {
+      console.log('MathJax is ready');
+      window.mathJaxReady = true;
+    });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS_CHTML" async></script>
+    
+    <!-- Load game scripts -->
     <script src="game_template.js"></script>
     <script src="chapter_data.js"></script>
+    
+    <!-- Start the game after everything is loaded -->
+    <script>
+    // Global flag to track MathJax readiness
+    window.mathJaxReady = false;
+    
+    // Wait for both MathJax and game scripts to be ready
+    window.addEventListener('load', function() {
+        console.log('Page loaded, waiting for MathJax...');
+        
+        // Check if MathJax is loaded every 100ms
+        function checkMathJaxLoaded() {
+            if (window.MathJax && window.MathJax.Hub) {
+                console.log('MathJax detected, waiting for it to be fully ready...');
+                
+                // Register a callback for when MathJax is fully initialized
+                MathJax.Hub.Register.StartupHook("End", function() {
+                    console.log('MathJax is fully initialized');
+                    window.mathJaxReady = true;
+                    
+                    // Now check if game scripts are loaded
+                    if (typeof beginChapter === 'function') {
+                        console.log('Starting game with MathJax ready...');
+                        beginChapter();
+                    } else {
+                        console.log('Waiting for game scripts...');
+                        setTimeout(checkGameScriptsLoaded, 100);
+                    }
+                });
+            } else {
+                console.log('Waiting for MathJax to load...');
+                setTimeout(checkMathJaxLoaded, 100);
+            }
+        }
+        
+        // Check if game scripts are loaded
+        function checkGameScriptsLoaded() {
+            if (typeof beginChapter === 'function') {
+                console.log('Game scripts loaded, starting game...');
+                beginChapter();
+            } else {
+                console.log('Still waiting for game scripts...');
+                setTimeout(checkGameScriptsLoaded, 100);
+            }
+        }
+        
+        // Start the checking process
+        checkMathJaxLoaded();
+    });
+    </script>
 </head>
 <body>
     <div id="steamContainer"></div>

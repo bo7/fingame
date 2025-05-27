@@ -610,3 +610,30 @@ body.modal-open {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
+
+/* Math formula styling */
+.math-formula {
+    padding: 15px;
+    margin: 15px 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2em;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* Make MathJax output more visible */
+.MathJax {
+    color: #ffd700 !important;
+    font-size: 1.3em !important;
+}
+
+/* Ensure MathJax SVG elements are visible */
+.MathJax_SVG_Display {
+    margin: 10px auto !important;
+    text-align: center !important;
+}
+
+.MathJax_SVG {
+    display: inline-block !important;
+}

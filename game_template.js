@@ -266,6 +266,257 @@ function createCelebrationParticle() {
     }, 3000);
 }
 
+function showHint() {
+    const hintSection = document.getElementById('hintSection');
+    const hintText = document.getElementById('hintText');
+    
+    if (currentChapterData && currentChapterData.HINTS && currentChapterData.HINTS.length > 0) {
+        // Show the first hint, then the next one on subsequent clicks
+        const hintIndex = Math.min(gameState.hintsUsed, currentChapterData.HINTS.length - 1);
+        const hintContent = currentChapterData.HINTS[hintIndex];
+        
+        console.log('Showing hint:', hintContent);
+        
+        hintText.innerHTML = hintContent;
+        hintSection.classList.remove('hidden');
+        
+        // Only increment if we haven't shown all hints yet
+        if (gameState.hintsUsed < currentChapterData.HINTS.length) {
+            gameState.hintsUsed++;
+        }
+        
+        // Direct MathJax rendering using the same approach as the test page
+        if (window.MathJax && window.MathJax.Hub) {
+            console.log('Directly calling MathJax.Hub.Queue for hint text');
+            // Force MathJax to process the hint text
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, hintText]);
+            MathJax.Hub.Queue(() => {
+                console.log('MathJax rendering completed for hint');
+            });
+        } else {
+            console.warn('MathJax not available for hint rendering');
+        }
+    }
+}
+
+// Special function to insert a LaTeX formula directly
+function insertLaTeXFormula(elementId, formula) {
+    const element = document.getElementById(elementId);
+    if (!element) {
+        console.error(`Element with ID ${elementId} not found`);
+        return;
+    }
+    
+    // Set the formula HTML directly
+    element.innerHTML = '<div class="math-formula">$$' + formula + '$$</div>';
+    console.log('Inserted formula HTML:', element.innerHTML);
+    
+    // Render the formula
+    if (window.MathJax && window.MathJax.Hub) {
+        console.log(`Rendering LaTeX formula in ${elementId}:`, formula);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, element]);
+        MathJax.Hub.Queue(() => {
+            console.log('MathJax rendering completed for formula');
+        });
+    } else {
+        console.warn('MathJax not available for formula rendering');
+    }
+}
+
+// Function to directly fix the formula in the DOM after it's loaded
+window.fixFormula = function() {
+    console.log('🔶 ATTEMPTING TO FIX FORMULA DIRECTLY IN THE DOM');
+    
+    // Find all math formula elements
+    const formulas = document.querySelectorAll('.math-formula');
+    console.log(`Found ${formulas.length} formula elements`);
+    
+    formulas.forEach((formula, index) => {
+        console.log(`Formula ${index} content:`, formula.innerHTML);
+        
+        // Check if it contains the mangled formula
+        if (formula.innerHTML.includes('lim_{x o 0} rac{sin(x) - x cos(x)}{x^3}')) {
+            console.log(`Found mangled formula in element ${index}, fixing...`);
+            
+            // Replace with correct formula
+            formula.innerHTML = '$$\\lim_{x \\to 0} \\frac{\\sin(x) - x \\cos(x)}{x^3}$$';
+            
+            // Force MathJax to reprocess
+            if (window.MathJax && window.MathJax.Hub) {
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub, formula]);
+            }
+        }
+    });
+    
+    return 'Formula fix attempted';
+};
+
+function showPuzzle() {
+    console.log('🔴 UPDATED showPuzzle FUNCTION CALLED');
+    const puzzleBox = document.getElementById('puzzleBox');
+    const puzzleText = document.getElementById('puzzleText');
+    const puzzleInput = document.getElementById('puzzleInput');
+    
+    if (currentChapterData) {
+        // Use the original approach to set the content
+        const puzzleHTML = currentChapterData.PUZZLE_DESCRIPTION + '<br><br>' + 
+                         currentChapterData.PUZZLE_FORMULA_DISPLAY + '<br><br>' + 
+                         currentChapterData.PUZZLE_INSTRUCTIONS;
+        
+        // Set the content and show the box
+        puzzleText.innerHTML = puzzleHTML;
+        puzzleInput.placeholder = currentChapterData.PUZZLE_INPUT_PLACEHOLDER;
+        puzzleBox.classList.remove('hidden');
+        
+        // Scroll to the puzzle
+        puzzleBox.scrollIntoView({ behavior: 'smooth' });
+        
+        // Process with MathJax
+        if (window.MathJax && window.MathJax.Hub) {
+            console.log('Processing puzzle with MathJax');
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, puzzleText]);
+            
+            // After MathJax processing, try to fix the formula directly
+            MathJax.Hub.Queue(() => {
+                console.log('MathJax initial processing completed, now fixing formula...');
+                window.fixFormula();
+                puzzleInput.focus();
+            });
+        } else {
+            console.warn('MathJax not available');
+            puzzleInput.focus();
+        }
+    }
+}
+
+// Test function that can be called directly from the console
+window.testMathJax = function() {
+    console.log('🔵 TESTING MATHJAX DIRECTLY');
+    
+    // Create a test div
+    const testDiv = document.createElement('div');
+    testDiv.id = 'mathjax-test-div';
+    testDiv.style.padding = '20px';
+    testDiv.style.background = 'rgba(0, 0, 0, 0.8)';
+    testDiv.style.color = '#ffd700';
+    testDiv.style.position = 'fixed';
+    testDiv.style.top = '50px';
+    testDiv.style.left = '50px';
+    testDiv.style.zIndex = '9999';
+    testDiv.style.borderRadius = '10px';
+    testDiv.style.border = '2px solid #ffd700';
+    
+    // Add a title
+    testDiv.innerHTML = '<h3>MathJax Test</h3><div id="test-formula"></div><button id="close-test" style="margin-top: 10px; padding: 5px;">Close</button>';
+    document.body.appendChild(testDiv);
+    
+    // Add close button functionality
+    document.getElementById('close-test').addEventListener('click', function() {
+        document.body.removeChild(testDiv);
+    });
+    
+    // Get the formula container
+    const formulaContainer = document.getElementById('test-formula');
+    
+    // Create a script element to add the formula
+    const script = document.createElement('script');
+    script.type = 'math/tex; mode=display';
+    
+    // Set a very simple formula
+    script.textContent = 'x^2';
+    
+    // Add the script to the container
+    formulaContainer.appendChild(script);
+    
+    // Process with MathJax
+    if (window.MathJax && window.MathJax.Hub) {
+        console.log('Processing test formula with MathJax');
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, formulaContainer]);
+        MathJax.Hub.Queue(() => {
+            console.log('MathJax test rendering completed');
+        });
+    } else {
+        console.warn('MathJax not available for test');
+        formulaContainer.innerHTML = '<p style="color: red;">MathJax not available!</p>';
+    }
+    
+    return 'Test initiated - check the top left of the screen';
+};
+
+// Function to render MathJax equations (optimized for MathJax v2)
+window.renderMathJax = function(elementToProcess, retryCount = 0) {
+    const elementId = elementToProcess ? (elementToProcess.id || 'specific-element') : 'document';
+    console.log(`Rendering MathJax for ${elementId}`);
+    
+    return new Promise((resolve) => {
+        // If MathJax isn't loaded yet and we haven't exceeded retry limit
+        if ((!window.MathJax || !window.mathJaxReady) && retryCount < 10) {
+            console.log(`MathJax not fully ready yet, will retry (${retryCount + 1}/10)...`);
+            // Retry after a delay
+            setTimeout(() => {
+                renderMathJax(elementToProcess, retryCount + 1)
+                    .then(resolve);
+            }, 500); // Longer delay between retries
+            return;
+        }
+        
+        // If we've exceeded retry limit or MathJax is still not available
+        if (!window.MathJax || !window.mathJaxReady) {
+            console.warn('MathJax not loaded after multiple retries');
+            resolve();
+            return;
+        }
+        
+        try {
+            // MathJax v2 approach (using Hub)
+            if (window.MathJax.Hub) {
+                const target = elementToProcess || document.body;
+                
+                // First tell MathJax to look for unprocessed math in the target
+                window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub, target]);
+                
+                // Then resolve the promise when MathJax is done
+                window.MathJax.Hub.Queue(() => {
+                    console.log(`MathJax rendering completed for ${elementId}`);
+                    resolve();
+                });
+            } 
+            // Fallback for MathJax v3 (in case we switch back)
+            else if (window.MathJax.typesetPromise) {
+                const elements = elementToProcess ? [elementToProcess] : undefined;
+                window.MathJax.typesetPromise(elements)
+                    .then(() => {
+                        console.log(`MathJax typeset completed for ${elementId}`);
+                        resolve();
+                    })
+                    .catch(err => {
+                        console.error('MathJax typeset error:', err);
+                        resolve();
+                    });
+            } 
+            else {
+                console.warn('MathJax is loaded but no compatible API found');
+                resolve();
+            }
+        } catch (err) {
+            console.error('Error in MathJax rendering:', err);
+            resolve();
+        }
+    });
+};
+
+// Ensure MathJax is loaded and ready
+function ensureMathJax() {
+    return new Promise((resolve) => {
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            console.log('MathJax is ready');
+            resolve();
+        } else {
+            console.log('Waiting for MathJax...');
+            setTimeout(() => ensureMathJax().then(resolve), 100);
+        }
+    });
+}
 
 // --- Dynamic HTML Generation Function ---
 function generateGameLayout(chapterData) {
@@ -365,6 +616,26 @@ function generateGameLayout(chapterData) {
     `;
 
     document.body.appendChild(gameContainer);
+    
+    // Direct MathJax rendering using the same approach as the test page
+    if (window.MathJax && window.MathJax.Hub) {
+        console.log('Directly calling MathJax.Hub.Queue for game container');
+        // Process the entire game container
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, gameContainer]);
+        
+        // Also specifically process the narrative text
+        const narrativeText = document.getElementById('narrativeText');
+        if (narrativeText) {
+            console.log('Directly calling MathJax.Hub.Queue for narrative text');
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, narrativeText]);
+        }
+        
+        MathJax.Hub.Queue(() => {
+            console.log('MathJax rendering completed for game layout');
+        });
+    } else {
+        console.warn('MathJax not available for game layout rendering');
+    }
 
     // Add rotating Gemini images to the scene image
     const geminiImages = [

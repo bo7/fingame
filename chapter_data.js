@@ -40,7 +40,12 @@ const chapterData = {
 
         PUZZLE_TITLE: 'The Limit Lock Challenge',
         PUZZLE_DESCRIPTION: "Before you stands an ancient mechanism covered in calculus symbols and infinite series. Steam hisses from bronze pipes as gears inscribed with Taylor polynomials slowly rotate. A crystalline voice echoes from within:",
-        PUZZLE_FORMULA_DISPLAY: `lim<sub>x→0</sub> <span style="font-size: 1.4em;">(sin(x) - x cos(x)) / x³</span>`,
+        // Using a more reliable approach for the formula display
+        PUZZLE_FORMULA_DISPLAY: `<div class="math-formula" id="limitFormula">
+            <span style="font-size: 1.5em; color: #ffd700;">
+                lim<sub>x→0</sub> (sin(x) - x·cos(x))/x<sup>3</sup>
+            </span>
+        </div>`,
         PUZZLE_HINT_SHORT: "Consider Taylor series expansions or L'Hôpital's rule...",
         PUZZLE_INPUT_PLACEHOLDER: "Enter the limit value (fraction or decimal)...",
         PUZZLE_INSTRUCTIONS: "Find the exact value of this limit. The ancient mechanisms require precision to the nearest simple fraction.",
@@ -131,16 +136,154 @@ const chapterData = {
         CHAPTER_PROGRESS_SUMMARY_TEXT: "The Recursive Clocktower's temporal algorithms are restored, and the Golden Ratio Data Shard is secured. Two shards down, five to go. The Shadow Compiler's grip on New Cognitia's time streams has weakened, but it's regrouping.",
         NEXT_CHAPTER_LOCATION_HINT: "The Quantum Nexus, where data entanglement holds the next shard hostage! Prepare for quantum paradoxes!",
         SAVE_FLAG: 'chapter2_completed'
+    },
+    'chapter3': {
+        CHAPTER_NUMBER: 'III',
+        CHAPTER_TITLE: 'The Quantum Matrix Labyrinth',
+        LOCATION_NAME: 'Quantum Computing Lab',
+        LOCATION_SUBTITLE: 'Where classical and quantum realms converge',
+        SCENE_IMAGE: 'images/quantum_lab.jpg',
+        INITIAL_NARRATIVE_TEXT: "The air hums with quantum potential as you enter the lab. Strange equations float in the air, their solutions constantly collapsing and reforming...",
+        OBJECTIVE_INITIAL: "Decrypt the quantum encryption",
+
+        storyPhases: [
+            {
+                title: "⚛️ Quantum Anomaly Detected",
+                text: "Your team's quantum sensors detect a dangerous instability in the lab's core matrix. The very fabric of mathematical reality seems to be unraveling at the quantum level.",
+                action: "Investigate the anomaly"
+            },
+            {
+                title: "🔍 Quantum Entanglement Puzzle",
+                text: "The lab's main console displays a complex quantum state. To stabilize the matrix, you must find the eigenvalues of a 3×3 Hermitian matrix with complex entries.",
+                action: "Approach the quantum console"
+            },
+            {
+                title: "🧮 The Matrix Challenge",
+                text: "The system displays: 'Find the eigenvalues of the matrix [[2, 1-i, 0], [1+i, 1, 1], [0, 1, 3]] where i is the imaginary unit.' The quantum field fluctuates dangerously.",
+                action: "Solve the matrix equation"
+            }
+        ],
+
+        PUZZLE_TITLE: 'Quantum Eigenvalue Challenge',
+        PUZZLE_DESCRIPTION: "The quantum console displays a complex Hermitian matrix. The system requires the eigenvalues to stabilize the quantum field. The matrix is:",
+        PUZZLE_FORMULA_DISPLAY: `$$\begin{bmatrix} 2 & 1-i & 0 \\ 1+i & 1 & 1 \\ 0 & 1 & 3 \end{bmatrix}$$`,
+        PUZZLE_HINT_SHORT: "For a 3×3 Hermitian matrix, the eigenvalues are real numbers. The characteristic polynomial is cubic.",
+        PUZZLE_INPUT_PLACEHOLDER: "Enter eigenvalues as comma-separated values (e.g., 1,2,3)",
+        PUZZLE_INSTRUCTIONS: "Find all eigenvalues of the given Hermitian matrix. Enter them in increasing order, separated by commas.",
+        PUZZLE_GUARDIAN_NAME: "Quantum Matrix Guardian",
+        PUZZLE_CHALLENGE_DIALOGUE: "Archmage Finja, to stabilize the quantum field, you must find the eigenvalues of this Hermitian matrix. The future of quantum computation depends on your solution!",
+        PUZZLE_CLARIFICATION_DIALOGUE: "Enter the eigenvalues in increasing order, separated by commas. Precision to two decimal places is required.",
+        CORRECT_ANSWERS: ["-0.41,1.27,4.14", "-0.41, 1.27, 4.14", "-0.4,1.3,4.1", "-0.4, 1.3, 4.1"],
+
+        HINTS: [
+            "Thomas suggests: 'Remember, for a Hermitian matrix, the eigenvalues are always real numbers.'",
+            "Alex's analysis: 'The characteristic polynomial is λ³ - 6λ² + 7λ + 2. Try using the Rational Root Theorem.'",
+            "Marvin sings: '🎵 Cubic equations can be tough, Cardano's formula is rough! Try x = 2cosθ, it might be enough! 🎵'"
+        ],
+
+        THOMAS_VICTORY_DIALOGUE: "Brilliant! The quantum field stabilizes immediately. Your understanding of linear algebra is truly exceptional, Finja!",
+        MARVIN_VICTORY_DIALOGUE: "🎵 Eigenvalues aligned just right, quantum states now shining bright! The matrix is stable, the future's now stable! 🎵",
+        ALEX_VICTORY_DIALOGUE: "Fascinating! Your solution has given us new insights into quantum state manipulation. The Shadow Compiler's interference patterns are becoming clearer now.",
+        DATA_SHARD_NAME: "Quantum Matrix Shard",
+
+        CHAPTER_PROGRESS_SUMMARY_TEXT: "The quantum matrix has been stabilized, but the Shadow Compiler's influence is spreading through higher-dimensional spaces. The fourth Data Shard is now within reach.",
+        NEXT_CHAPTER_LOCATION_HINT: "The Neural Network Nexus, where machine learning models have gained sentience!"
+    },
+    'chapter4': {
+        CHAPTER_NUMBER: 'IV',
+        CHAPTER_TITLE: 'The Titanic Data Vault',
+        LOCATION_NAME: 'Data Science Archives',
+        LOCATION_SUBTITLE: 'Where patterns reveal the future',
+        SCENE_IMAGE: 'images/neural_network.jpg',
+        INITIAL_NARRATIVE_TEXT: "The air is thick with the hum of data processors. Rows of glowing screens display passenger manifests and survival statistics from the ill-fated RMS Titanic. The Shadow Compiler has corrupted the prediction model, and only you can restore it...",
+        OBJECTIVE_INITIAL: "Predict passenger survival",
+
+        storyPhases: [
+            {
+                title: "🛳️ The Titanic Dataset",
+                text: "The system displays a dataset of 891 passengers from the Titanic. Each row contains passenger details like class, age, gender, and whether they survived. The Shadow Compiler has scrambled the survival predictions.",
+                action: "Examine the dataset"
+            },
+            {
+                title: "📊 Data Analysis Required",
+                text: "Thomas points out: 'The survival rate is only 38.4%. Women and children were prioritized, but other factors like passenger class and fare also played a role.' The model needs to predict survival based on these patterns.",
+                action: "Analyze the data"
+            },
+            {
+                title: "🔍 The Prediction Challenge",
+                text: "The system displays a test passenger: 'A 28-year-old female, 1st class, with 2 siblings/spouses aboard, no parents/children, fare $80, embarked from Southampton.' What's the probability (0-100%) she survived?",
+                action: "Make a prediction"
+            }
+        ],
+
+        PUZZLE_TITLE: 'Survival Prediction Challenge',
+        PUZZLE_DESCRIPTION: "Using the Titanic dataset, analyze the patterns in the data to predict the survival probability for the given passenger. Consider factors like gender, class, age, and fare.",
+        PUZZLE_FORMULA_DISPLAY: `
+            Passenger Details:
+            - Age: 28
+            - Sex: Female
+            - Class: 1st
+            - Siblings/Spouses: 2
+            - Parents/Children: 0
+            - Fare: $80
+            - Embarked: Southampton
+        `,
+        PUZZLE_HINT_SHORT: "In the training data, 1st class female passengers had a survival rate of about 96.8%.",
+        PUZZLE_INPUT_PLACEHOLDER: "Enter survival probability (0-100%)",
+        PUZZLE_INSTRUCTIONS: "Based on the training data patterns, what is the probability (0-100%) that this passenger survived? Round to the nearest whole number.",
+        PUZZLE_GUARDIAN_NAME: "Data Science Guardian",
+        PUZZLE_CHALLENGE_DIALOGUE: "Archmage Finja, the Shadow Compiler has corrupted our prediction models! Using your data analysis skills, predict the survival probability for this passenger based on the Titanic dataset patterns.",
+        PUZZLE_CLARIFICATION_DIALOGUE: "Enter a whole number between 0 and 100 representing the percentage chance of survival.",
+        CORRECT_ANSWERS: ["97", "96", "98", "95", "96%", "97%", "98%", "95%"],
+
+        HINTS: [
+            "Thomas suggests: 'In the training data, 1st class passengers had a 62.9% survival rate overall, but women in 1st class had a 96.8% survival rate. You can explore the full dataset here: https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv'",
+            "Alex's analysis: 'The passenger is a young adult female in 1st class, which was the demographic most likely to survive. The fare of $80 is well above average, suggesting good accommodations. The dataset shows these factors were strongly correlated with survival.'",
+            "Marvin sings: '🎵 Women and children first, that's the rule, in this data science tool! First class and female too, her chances are looking true! Check the data, don't be a fool, at Stanford's link, it's really cool! 🎵'"
+        ],
+
+        THOMAS_VICTORY_DIALOGUE: "Brilliant analysis, Finja! Your prediction of 97% matches the historical patterns perfectly. The model's accuracy is now 89% - the highest it's ever been!",
+        MARVIN_VICTORY_DIALOGUE: "🎵 Numbers don't lie, the data's clear, your prediction brings victory near! The Shadow Compiler's losing might, thanks to your data science sight! 🎵",
+        ALEX_VICTORY_DIALOGUE: "Fascinating! Your understanding of feature importance and statistical patterns is exceptional. The model is now making accurate predictions again.",
+        DATA_SHARD_NAME: "Data Science Shard",
+
+        CHAPTER_PROGRESS_SUMMARY_TEXT: "The prediction model has been restored, revealing the location of the next Data Shard. The Shadow Compiler's influence is weakening, but we must remain vigilant.",
+        NEXT_CHAPTER_LOCATION_HINT: "The Cryptographic Citadel, where the final encryption keys are stored..."
     }
-    // Add more chapters here, e.g., 'chapter3': { ... }
 };
 
 let currentChapterData = null; // Will hold the data for the currently active chapter
 
 // --- Chapter Logic (moved from individual chapter files) ---
 function beginChapter() {
-    gameState.storyPhase = 0;
-    showNextStoryPhase();
+    console.log('beginChapter called');
+    try {
+        // Set the current chapter data
+        currentChapterData = chapterData['chapter1'];
+        console.log('Current chapter data:', currentChapterData ? 'loaded' : 'missing');
+        
+        // Reset game state
+        gameState = {
+            storyPhase: 0,
+            cluesFound: 0,
+            hintsUsed: 0,
+            puzzleSolved: false,
+            chapterComplete: false
+        };
+        
+        // Start the first story phase
+        showNextStoryPhase();
+        
+        // Initial MathJax render after a short delay
+        setTimeout(() => {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }, 500);
+        
+    } catch (error) {
+        console.error('Error in beginChapter:', error);
+    }
 }
 
 function showNextStoryPhase() {
