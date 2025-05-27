@@ -190,10 +190,45 @@ function showInventory() {
 
 function showCharacterInfo(characterKey) {
     const char = characterInfo[characterKey];
-    if (char) {
-        alert(`${char.name} (${char.class})\n\n${char.description}`);
-    }
+    if (!char) return;
+
+    const modal = document.getElementById('characterModal');
+    document.getElementById('modalCharacterName').textContent = char.name;
+    document.getElementById('modalCharacterClass').textContent = char.class;
+    document.getElementById('modalCharacterDescription').textContent = char.description;
+    
+    const img = document.getElementById('modalCharacterImage');
+    img.src = char.image;
+    img.alt = `${char.name} - ${char.class}`;
+    
+    // Show the modal and prevent body scrolling
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+    
+    // Focus the modal for keyboard navigation
+    modal.focus();
 }
+
+function closeCharacterModal() {
+    const modal = document.getElementById('characterModal');
+    modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+}
+
+// Close modal when clicking outside content
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('characterModal');
+    if (event.target === modal) {
+        closeCharacterModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeCharacterModal();
+    }
+});
 
 function celebrateVictory() {
     document.body.style.animation = 'celebrate 2s ease-in-out';
@@ -330,6 +365,22 @@ function generateGameLayout(chapterData) {
     `;
 
     document.body.appendChild(gameContainer);
+
+    // Add character modal HTML
+    const modalHTML = `
+    <div id="characterModal" class="character-modal" onclick="closeCharacterModal()">
+        <div class="character-modal-content" onclick="event.stopPropagation()">
+            <img id="modalCharacterImage" src="" alt="Character Image" class="character-modal-image">
+            <div class="character-name" id="modalCharacterName"></div>
+            <div class="character-class" id="modalCharacterClass"></div>
+            <div class="character-description" id="modalCharacterDescription"></div>
+            <button class="action-btn" style="background: linear-gradient(45deg, #8b4513, #a0522d); margin-top: 20px;" onclick="closeCharacterModal()">
+                Close
+            </button>
+        </div>
+    </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
 
     // After rendering, set initial typewriter text and start animations
     typeWriter(chapterData.INITIAL_NARRATIVE_TEXT, document.getElementById('narrativeText'));

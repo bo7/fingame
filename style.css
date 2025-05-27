@@ -221,13 +221,16 @@ body {
 }
 
 .character-modal img {
-    width: 100%;
-    max-width: 400px;
+    width: auto;
+    max-width: 90%;
+    max-height: 70vh;
     height: auto;
     border-radius: 10px;
-    border: 2px solid #8b4513;
-    margin: 0 auto 20px;
+    border: 3px solid #8b4513;
+    margin: 0 auto 25px;
     display: block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    object-fit: contain;
 }
 
 .character-modal .character-name {
