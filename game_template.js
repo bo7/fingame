@@ -85,6 +85,21 @@ const characterInfo = {
     }
 };
 
+// Reset game progress and unlock only Chapter 1
+function resetGameProgress() {
+    if (confirm('Are you sure you want to reset all game progress? This cannot be undone.')) {
+        // Clear all chapter completion flags
+        localStorage.removeItem('chapter1_completed');
+        localStorage.removeItem('chapter2_completed');
+        
+        // Optional: Clear any other game state if needed
+        // localStorage.removeItem('gameState');
+        
+        // Reload the page to reflect changes
+        window.location.reload();
+    }
+}
+
 // --- Common Game Functions ---
 function createSteamParticles() {
     const container = document.getElementById('steamContainer');

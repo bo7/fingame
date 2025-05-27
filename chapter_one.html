@@ -504,10 +504,7 @@ ${gameState.puzzleSolved ? '💎 DATA SHARD ACQUIRED: Limit Shard of Euler' : '�
             `);
         }
 
-        function showCharacterInfo(character) {
-            const info = characterInfo[character];
-            alert(info);
-        }
+
 
         function updateChapterProgress() {
             const statusDiv = document.getElementById('chapterStatus');
@@ -527,8 +524,14 @@ ${gameState.puzzleSolved ? '💎 DATA SHARD ACQUIRED: Limit Shard of Euler' : '�
             // Continue creating steam particles periodically
             setInterval(createSteamParticles, 8000);
 
-            typeWriter("Welcome to New Cognitia, Archmage Finja! The greatest mathematical adventure of your lifetime awaits...",
-                      document.getElementById('narrativeText'));
+            // Hide the Begin Chapter button since we'll start automatically
+            const beginButton = document.querySelector('.action-btn[onclick="beginChapter()"]');
+            if (beginButton) {
+                beginButton.style.display = 'none';
+            }
+
+            // Start the chapter automatically
+            beginChapter();
 
             // Add some atmospheric gear rotation
             setInterval(() => {
@@ -549,6 +552,113 @@ ${gameState.puzzleSolved ? '💎 DATA SHARD ACQUIRED: Limit Shard of Euler' : '�
                         checkPuzzle();
                     }
                 });
+            }
+        });
+    </script>
+
+    <!-- Character Modal -->
+    <div id="characterModal" class="character-modal" onclick="closeCharacterModal()">
+        <div class="character-modal-content" onclick="event.stopPropagation()">
+            <img id="modalCharacterImage" src="" alt="Character Image">
+            <div class="character-name" id="modalCharacterName"></div>
+            <div class="character-class" id="modalCharacterClass"></div>
+            <div class="character-description" id="modalCharacterDescription"></div>
+            <button class="action-btn" style="background: linear-gradient(45deg, #8b4513, #a0522d);" onclick="closeCharacterModal()">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Character data
+        const characters = {
+            finja: {
+                name: '👑 Finja',
+                class: 'Archmage of Mathematics',
+                description: 'As the legendary Archmage of Mathematics, you command respect throughout New Cognitia. Your theorem compass glows brighter in the presence of pure mathematical truth.',
+                image: 'images/finja.png'
+            },
+            thomas: {
+                name: '🔮 Thomas',
+                class: 'Data Enchanter',
+                description: 'Thomas specializes in data enchantments, able to see the hidden patterns in corrupted algorithms. His crystal ball shows swirling probability distributions.',
+                image: 'images/thomas.png'
+            },
+            marvin: {
+                name: '🎵 Marvin',
+                class: 'Algorithm Bard',
+                description: 'The Algorithm Bard\'s songs can literally debug code and boost team morale. His lute is strung with fiber optic cables that pulse with data.',
+                image: 'images/marvin.png'
+            },
+            sven: {
+                name: '🛡️ Sven',
+                class: 'Security Paladin',
+                description: 'A noble protector of secure systems, Sven\'s silver armor bears the emblem of the Cryptographic Order. His presence strengthens all defensive protocols.',
+                image: 'images/sven.png'
+            },
+            dirk: {
+                name: '⚔️ Dirk',
+                class: 'Firewall Guardian',
+                description: 'The Firewall Guardian\'s dark armor is inscribed with protective runes. He wields a two-handed sword that can slice through the most stubborn malware.',
+                image: 'images/dirk.png'
+            },
+            hiromi: {
+                name: '🥷 Hiromi',
+                class: 'System Infiltrator',
+                description: 'Master of stealth and system infiltration, Hiromi can slip through network vulnerabilities undetected. Her daggers are USB keys with infinite storage.',
+                image: 'images/hiromi.png'
+            },
+            alex: {
+                name: '🧙 Alex',
+                class: 'Machine Learning Sage',
+                description: 'The Machine Learning Sage\'s neural networks can predict algorithmic behavior with uncanny accuracy. His robes shimmer with artificial intelligence.',
+                image: 'images/alex.png'
+            },
+            sebastian: {
+                name: '🪓 Sebastian',
+                class: 'Database Warrior',
+                description: 'A fierce defender of data integrity, Sebastian\'s massive battle axe has cleaved through countless database corruptions. He never loses a single record.',
+                image: 'images/sebastian.png'
+            },
+            moritz: {
+                name: '🏹 Moritz',
+                class: 'Network Ranger',
+                description: 'The Network Ranger\'s arrows always find the fastest path through any network topology. His elven heritage grants him perfect packet routing abilities.',
+                image: 'images/moritz.png'
+            }
+        };
+
+        function showCharacterInfo(characterId) {
+            const character = characters[characterId];
+            if (!character) return;
+
+            const modal = document.getElementById('characterModal');
+            document.getElementById('modalCharacterName').textContent = character.name;
+            document.getElementById('modalCharacterClass').textContent = character.class;
+            document.getElementById('modalCharacterDescription').textContent = character.description;
+            
+            const img = document.getElementById('modalCharacterImage');
+            img.src = character.image;
+            img.alt = `${character.name} - ${character.class}`;
+            
+            // Show the modal and prevent body scrolling
+            modal.classList.add('active');
+            document.body.classList.add('modal-open');
+            
+            // Focus the modal for keyboard navigation
+            modal.focus();
+        }
+
+        function closeCharacterModal() {
+            const modal = document.getElementById('characterModal');
+            modal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Close modal when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeCharacterModal();
             }
         });
     </script>
