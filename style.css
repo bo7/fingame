@@ -2,6 +2,35 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Courier+New&display=swap');
 
+/* Gemini Gallery */
+.gemini-gallery {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Behind other content */
+    opacity: 0.4; /* Slightly transparent */
+    transition: opacity 1s ease-in-out;
+}
+
+.gemini-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.gemini-image.active {
+    opacity: 1;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -107,16 +136,43 @@ body {
     background: linear-gradient(45deg, #654321, #8b7355); /* Fallback gradient */
     border: 3px solid #d4af37;
     border-radius: 10px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Gemini Gallery inside scene image */
+.gemini-gallery {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 25px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+}
+
+.gemini-image {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    border-radius: 7px;
+    margin: auto;
+}
+
+.gemini-image.active {
+    opacity: 1;
 }
 
 .scene-content {

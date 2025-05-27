@@ -366,6 +366,48 @@ function generateGameLayout(chapterData) {
 
     document.body.appendChild(gameContainer);
 
+    // Add rotating Gemini images to the scene image
+    const geminiImages = [
+        'images/Gemini_Generated_Image_9mstdc9mstdc9mst.jpeg',
+        'images/Gemini_Generated_Image_9mstdd9mstdd9mst.jpeg',
+        'images/Gemini_Generated_Image_9mstdg9mstdg9mst.jpeg',
+        'images/Gemini_Generated_Image_svzo70svzo70svzo.jpeg',
+        'images/Gemini_Generated_Image_svzo71svzo71svzo.jpeg',
+        'images/Gemini_Generated_Image_svzo72svzo72svzo.jpeg',
+        'images/Gemini_Generated_Image_svzo73svzo73svzo.jpeg',
+        'images/Gemini_Generated_Image_svzo75svzo75svzo.jpeg',
+        'images/Gemini_Generated_Image_svzo76svzo76svzo.jpeg',
+        'images/Gemini_Generated_Image_svzo77svzo77svzo.jpeg',
+        'images/Gemini_Generated_Image_svzo78svzo78svzo.jpeg'
+    ];
+
+    // Create gallery container
+    const gallery = document.createElement('div');
+    gallery.id = 'geminiGallery';
+    gallery.className = 'gemini-gallery';
+    
+    // Add all images to the gallery (only one will be active at a time)
+    geminiImages.forEach((src, index) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Gemini Art ${index + 1}`;
+        img.className = 'gemini-image' + (index === 0 ? ' active' : '');
+        gallery.appendChild(img);
+    });
+    
+    // Add gallery to the scene image
+    const sceneImage = document.getElementById('sceneImage');
+    if (sceneImage) {
+        // Add gear animation if it doesn't exist
+        if (!document.querySelector('.gear-animation')) {
+            const gear = document.createElement('div');
+            gear.className = 'gear-animation';
+            gear.textContent = '⚙️';
+            sceneImage.appendChild(gear);
+        }
+        sceneImage.appendChild(gallery);
+    }
+
     // Add character modal HTML
     const modalHTML = `
     <div id="characterModal" class="character-modal" onclick="closeCharacterModal()">
@@ -392,6 +434,29 @@ function generateGameLayout(chapterData) {
             // gear.style.color = Math.random() > 0.5 ? '#ffd700' : '#d4af37'; // Example: optional color flicker
         }
     }, 3000);
+
+    // Rotate Gemini images every 5 seconds
+    const rotateGeminiImages = () => {
+        const images = document.querySelectorAll('.gemini-image');
+        if (images.length > 1) {  // Only rotate if we have multiple images
+            const currentIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
+            const nextIndex = (currentIndex + 1) % images.length;
+            
+            // Fade out current image
+            if (currentIndex >= 0) {
+                images[currentIndex].classList.remove('active');
+            }
+            
+            // Fade in next image
+            images[nextIndex].classList.add('active');
+        }
+    };
+    
+    // Start rotating images every 5 seconds if there are multiple images
+    const geminiImagesList = document.querySelectorAll('.gemini-image');
+    if (geminiImagesList.length > 1) {
+        setInterval(rotateGeminiImages, 5000);
+    }
 
     // Add Enter key listener for puzzle input after the puzzle box is generated
     const puzzleInput = document.getElementById('puzzleInput');
