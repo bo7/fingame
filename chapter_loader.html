@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Loading Chapter...</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="game_template.js"></script>
+    <script src="chapter_data.js"></script>
+</head>
+<body>
+    <div id="steamContainer"></div>
+
+    <div id="gameContentLoader" style="text-align: center; color: #d4af37; padding-top: 50vh; transform: translateY(-50%);">
+        Loading chapter data...
+    </div>
+
+    <script>
+        // Get the chapter ID from the URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapterId = urlParams.get('chapter');
+
+        if (chapterId && chapterData[chapterId]) {
+            currentChapterData = chapterData[chapterId]; // Set the global currentChapterData
+            gameState.currentChapterId = chapterId; // Set the global game state chapter ID
+
+            // Perform the pre-chapter check
+            if (chapterId === 'chapter2' && localStorage.getItem('chapter1_completed') !== 'true') {
+                alert('You must complete Chapter I first to access this chapter!');
+                window.location.href = 'chapter_select.html';
+            }
+            // Add checks for other chapters here:
+            // else if (chapterId === 'chapter3' && localStorage.getItem('chapter2_completed') !== 'true') { /* ... */ }
+
+            // Generate the entire game layout using the template function
+            generateGameLayout(currentChapterData);
+
+            // Update page title
+            document.getElementById('pageTitle').innerText = `Chapter ${currentChapterData.CHAPTER_NUMBER}: ${currentChapterData.CHAPTER_TITLE}`;
+
+        } else {
+            document.getElementById('gameContentLoader').innerHTML = "Chapter not found or invalid link. <br><a href='chapter_select.html' style='color: #ffd700; text-decoration: none;'>Go back to Chapter Select</a>";
+        }
+    </script>
+</body>
+</html>

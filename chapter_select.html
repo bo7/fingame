@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Data Pipeline Conspiracy: Chapter Select</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="game_template.js"></script> </head>
+<body>
+    <div id="steamContainer"></div>
+
+    <div class="select-container">
+        <h1 class="title">The Data Pipeline Conspiracy</h1>
+        <p style="color: #daa520; font-style: italic; margin-bottom: 30px;">Choose your next adventure, Archmage Finja!</p>
+
+        <div class="chapter-list" id="chapterList">
+            <a href="chapter_loader.html?chapter=chapter1" class="chapter-btn" id="chapter1Btn">
+                Chapter I: The Corrupted Algorithm <span class="lock-icon" id="chapter1Status"></span>
+            </a>
+            <a href="chapter_loader.html?chapter=chapter2" class="chapter-btn disabled" id="chapter2Btn">
+                Chapter II: The Recursive Clocktower <span class="lock-icon">🔒</span>
+            </a>
+            <a href="#" class="chapter-btn disabled" id="chapter3Btn">
+                Chapter III: The Quantum Nexus (Coming Soon) <span class="lock-icon">🔒</span>
+            </a>
+            </div>
+
+        <button class="start-game-btn" onclick="resetGameProgress()">🔄 Reset Game Progress</button>
+    </div>
+
+    <script>
+        // checkChapterStatus from game_template.js will be used, but it's specific to chapter_select.html
+        // so we define it here, and ensure it uses the game_template functions as needed.
+        function checkChapterStatus() {
+            const chapter1Completed = localStorage.getItem('chapter1_completed');
+            const chapter2Completed = localStorage.getItem('chapter2_completed');
+
+            const chapter1Btn = document.getElementById('chapter1Btn');
+            const chapter2Btn = document.getElementById('chapter2Btn');
+            const chapter3Btn = document.getElementById('chapter3Btn');
+
+            const chapter1Status = document.getElementById('chapter1Status');
+            const chapter2Status = chapter2Btn.querySelector('.lock-icon');
+            const chapter3Status = chapter3Btn.querySelector('.lock-icon');
+
+
+            // Chapter 1 status (always enabled, but show completion)
+            if (chapter1Completed === 'true') {
+                chapter1Status.innerHTML = '✅';
+            } else {
+                chapter1Status.innerHTML = '';
+            }
+
+            // Chapter 2 status
+            if (chapter1Completed === 'true') {
+                chapter2Btn.classList.remove('disabled');
+                chapter2Btn.onclick = null; // Remove the disable alert
+                if (chapter2Completed === 'true') {
+                    chapter2Status.innerHTML = '✅';
+                } else {
+                    chapter2Status.innerHTML = '➡️'; // Indicate ready to play
+                }
+            } else {
+                chapter2Btn.classList.add('disabled');
+                chapter2Btn.onclick = function(event) { event.preventDefault(); alert('Complete Chapter I first!'); };
+                chapter2Status.innerHTML = '🔒';
+            }
+
+            // Chapter 3 status (example)
+            if (chapter2Completed === 'true') { // Chapter 3 unlocks after Chapter 2
+                chapter3Btn.classList.remove('disabled');
+                chapter3Btn.onclick = null;
+                chapter3Status.innerHTML = '➡️'; // Indicate ready to play
+            } else {
+                chapter3Btn.classList.add('disabled');
+                chapter3Btn.onclick = function(event) { event.preventDefault(); alert('Complete Chapter II first!'); };
+                chapter3Status.innerHTML = '🔒';
+            }
+        }
+
+        // Override the resetGameProgress from game_template.js for this page if needed,
+        // or just ensure the one in game_template.js is generic enough.
+        // For simplicity, we'll keep the one in game_template.js and make sure it calls checkChapterStatus.
+        window.onload = function() {
+            createSteamParticles();
+            setInterval(createSteamParticles, 8000);
+            checkChapterStatus(); // Check status on page load
+        };
+    </script>
+</body>
+</html>

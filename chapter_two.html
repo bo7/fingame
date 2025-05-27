@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter II: The Recursive Clocktower</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <script>
+        if (localStorage.getItem('chapter1_completed') !== 'true') {
+            alert('You must complete Chapter I first to access the Recursive Clocktower!');
+            window.location.href = 'chapter_select.html'; // Redirect back to chapter select
+        }
+    </script>
+
+    <div id="steamContainer"></div>
+
+    <div class="game-container">
+        <div class="main-panel">
+            <h1 class="title">The Data Pipeline Conspiracy</h1>
+            <p class="subtitle" id="chapterSubtitle">Chapter II: The Recursive Clocktower</p>
+
+            <div class="chapter-header">
+                <h2 style="color: #da70d6; margin: 0;" id="chapterLocation">Location: The Recursive Clocktower</h2>
+                <small style="color: #daa520;" id="locationSubtitle">Where time and algorithms intertwine</small>
+            </div>
+
+            <div class="scene-image" id="sceneImage" style="background-image: url('images/steampunk_clocktower_1.jpg');">
+                <div class="gear-animation">⚙️</div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="storyProgress" style="width: 0%;"></div>
+            </div>
+
+            <div class="scene-content" id="storyContainer">
+                <div id="narrativeText">
+                    <div class="typewriter">Having secured the first Data Shard, your quest now leads to the enigmatic Recursive Clocktower. Its temporal algorithms are in disarray, threatening to unravel the very fabric of New Cognitia's data stream...</div>
+                </div>
+            </div>
+
+            <div class="puzzle-box hidden" id="puzzleBox">
+                <div class="puzzle-title">∞ The Fibonacci Engine Challenge</div>
+                <p id="puzzleText"></p>
+                <input type="text" class="puzzle-input" id="puzzleInput" placeholder="Enter your answer (e.g., 'phi' or '1.618')...">
+                <button class="action-btn" onclick="checkPuzzle()" style="margin-top: 15px; width: 100%;">🔑 Submit Answer</button>
+                <div id="hintSection" class="hidden" style="margin-top: 15px; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 5px;">
+                    <strong style="color: #ffd700;">💡 Team Hint:</strong>
+                    <span id="hintText"></span>
+                </div>
+            </div>
+
+            <div class="actions" id="actionButtons">
+                <button class="action-btn" onclick="beginChapter()">🚀 Begin Chapter II</button>
+                <button class="action-btn" onclick="showTeamStatus()">👥 Check Team Status</button>
+                <button class="action-btn" onclick="examineEnvironment()">🔍 Examine Clocktower</button>
+                <button class="action-btn" onclick="showInventory()">🎒 Check Equipment</button>
+            </div>
+            <button class="action-btn" onclick="window.location.href='chapter_select.html'" style="margin-top: 20px; width: 100%; background: linear-gradient(45deg, #4b0082, #8a2be2);">
+                ⬅️ Back to Chapter Select
+            </button>
+        </div>
+
+        <div class="sidebar">
+            <div class="inventory">
+                <div class="inventory-title">🎒 Finja's Mathematical Arsenal</div>
+                <div id="inventoryList">
+                    • <strong>Analytical Engine Tablet</strong> - Processes complex calculations<br>
+                    • <strong>Theorem Compass</strong> - Points toward mathematical truth<br>
+                    • <strong>Data Crystal Resonator</strong> - Detects algorithm corruption<br>
+                    • <strong>Team Communication Device</strong> - Connects with party members<br>
+                    • <strong>Euler's Memorial Badge</strong> - Grants access to sacred mathematics<br>
+                    • <strong>Temporal Calibration Device</strong> - Newly acquired, essential for time-based puzzles!
+                </div>
+            </div>
+
+            <div class="character-panel">
+                <h3 style="color: #ffd700; margin-bottom: 15px;">🎭 Your Elite Mathematical Team</h3>
+
+                <div class="character" onclick="showCharacterInfo('finja')">
+                    <div class="character-name">👑 Finja</div>
+                    <div class="character-class">Archmage of Mathematics</div>
+                    <div class="character-status">Ready to lead the expedition</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 100%;"></div></div>
+                </div>
+
+                <div class="character" onclick="showCharacterInfo('thomas')">
+                    <div class="character-name">🔮 Thomas</div>
+                    <div class="character-class">Data Enchanter</div>
+                    <div class="character-status">Analyzing temporal paradoxes</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 95%;"></div></div>
+                </div>
+
+                <div class="character" onclick="showCharacterInfo('marvin')">
+                    <div class="character-name">🎵 Marvin</div>
+                    <div class="character-class">Algorithm Bard</div>
+                    <div class="character-status">Tuning temporal harmonies</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 98%;"></div></div>
+                </div>
+
+                <div class="character" onclick="showCharacterInfo('sven')">
+                    <div class="character-name">🛡️ Sven</div>
+                    <div class="character-class">Security Paladin</div>
+                    <div class="character-status">Reinforcing chronological defenses</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 100%;"></div></div>
+                </div>
+
+                <div class="character" onclick="showCharacterInfo('dirk')">
+                    <div class="character-name">⚔️ Dirk</div>
+                    <div class="character-class">Firewall Guardian</div>
+                    <div class="character-status">Detecting time-based intrusions</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 92%;"></div></div>
+                </div>
+
+                <div class="character" onclick="showCharacterInfo('hiromi')">
+                    <div class="character-name">🥷 Hiromi</div>
+                    <div class="character-class">System Infiltrator</div>
+                    <div class="character-status">Navigating recursive pathways</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 97%;"></div></div>
+                </div>
+
+                <div class="character" onclick="showCharacterInfo('alex')">
+                    <div class="character-name">🧙 Alex</div>
+                    <div class="character-class">Machine Learning Sage</div>
+                    <div class="character-status">Predicting temporal shifts</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 94%;"></div></div>
+                </div>
+
+                <div class="character" onclick="showCharacterInfo('sebastian')">
+                    <div class="character-name">🪓 Sebastian</div>
+                    <div class="character-class">Database Warrior</div>
+                    <div class="character-status">Protecting temporal data integrity</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 96%;"></div></div>
+                </div>
+
+                <div class="character" onclick="showCharacterInfo('moritz')">
+                    <div class="character-name">🏹 Moritz</div>
+                    <div class="character-class">Network Ranger</div>
+                    <div class="character-status">Scouting network pathways</div>
+                    <div class="health-bar"><div class="health-fill" style="width: 99%;"></div></div>
+                </div>
+            </div>
+
+            <div style="background: rgba(139, 69, 19, 0.2); padding: 18px; border-radius: 8px;">
+                <div style="color: #ffd700; font-weight: bold; margin-bottom: 12px;">📊 Chapter Progress</div>
+                <div id="chapterStatus">
+                    <div>🗺️ Location: The Recursive Clocktower</div>
+                    <div>🎯 Objective: Repair Fibonacci Engine</div>
+                    <div>🔍 Clues Found: 0/3</div>
+                    <div>💎 Data Shards: 0/1</div>
+                    <div style="color: #90EE90;">✨ Team Morale: Excellent!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let gameState = {
+            storyPhase: 0,
+            cluesFound: 0,
+            hintsUsed: 0,
+            puzzleSolved: false,
+            chapterComplete: false
+        };
+
+        // --- CHAPTER SPECIFIC CONTENT ---
+        const CHAPTER_NUMBER = 'II';
+        const CHAPTER_TITLE = 'The Recursive Clocktower';
+        const LOCATION_NAME = 'The Recursive Clocktower';
+        const LOCATION_SUBTITLE = 'Where time and algorithms intertwine';
+        // Note: SCENE_IMAGE_EMOJIS is no longer needed as we use background-image in CSS
+        const INITIAL_NARRATIVE_TEXT = 'Having secured the first Data Shard, your quest now leads to the enigmatic Recursive Clocktower. Its temporal algorithms are in disarray, threatening to unravel the very fabric of New Cognitia\'s data stream...';
+
+        const storyPhases = [
+            {
+                title: "⏳ Temporal Anomaly Detected",
+                text: "The Clocktower's massive Fibonacci Engine, usually a paragon of recursive elegance, sputters erratically. Data packets arrive out of order, and the city's temporal flow is compromised. The atmosphere is thick with the smell of ozone and burnt circuits.",
+                action: "Investigate the engine core"
+            },
+            {
+                title: "🔍 Unstable Recurrence",
+                text: "You reach the heart of the Clocktower. The main recursive loop of the Fibonacci Engine is stuck in an infinite calculation, creating a chaotic feedback loop. A data shard is visible, trapped within its temporal distortion. Strange symbols flash across the engine's interface.",
+                action: "Analyze the temporal distortion"
+            },
+            {
+                title: "🔮 The Golden Ratio's Plea",
+                text: "A faint, ethereal voice echoes through the gears: 'Archmage Finja! The Golden Ratio, the very essence of my balanced growth, has been corrupted. Its limit is skewed, causing recursive chaos. Restore my true value!' The voice seems to emanate from a shimmering data conduit.",
+                action: "Prepare for the challenge"
+            },
+            // Add more story phases as needed for your chapter
+        ];
+
+        const PUZZLE_TITLE = 'The Golden Ratio Recursion';
+        const PUZZLE_DESCRIPTION = "A critical component of the Fibonacci Engine, the Golden Ratio, has been destabilized. You must determine the limit of a specific sequence to recalibrate it.";
+        const PUZZLE_FORMULA_DISPLAY = `Consider the sequence given by the recurrence relation: $a_{n+1} = \\sqrt{1 + a_n}$ for $n \\ge 1$, with $a_1 = 1$.<br>
+                                        Find the exact value of $\\lim_{n \\to \\infty} a_n$.`; // Using LaTeX-like format for math, will display as plain text
+        const PUZZLE_HINT_SHORT = "Hint: Assume the limit exists and substitute it back into the recurrence relation.";
+        const PUZZLE_INPUT_PLACEHOLDER = "Enter the limit value (e.g., 'phi' or '1.618')...";
+        const PUZZLE_INSTRUCTIONS = "Find the exact value of this limit. Precision is key. You may use a fraction or the special constant 'phi' or its decimal approximation.";
+        const PUZZLE_GUARDIAN_NAME = "Clocktower Oracle";
+        const PUZZLE_CHALLENGE_DIALOGUE = "The very essence of the Clocktower, its Fibonacci Engine, falters because its foundational ratio is lost. Prove your understanding of infinite sequences and convergence!";
+        const PUZZLE_CLARIFICATION_DIALOGUE = "Recalibrate the engine by stating the correct limit, and the temporal flow shall be restored!";
+        // Correct answers for the Golden Ratio. Ensure robust checking.
+        const CORRECT_ANSWERS = ["(1+sqrt(5))/2", "phi", "1.618", "1.61803", "1.6180339887", "1.618034"];
+
+        const HINTS = [
+            "Thomas ponders: 'If the limit L exists, then as n approaches infinity, both $a_{n+1}$ and $a_n$ approach L. So, L = $\\sqrt{1 + L}$. Solve for L.'",
+            "Alex's AI suggests: 'Square both sides of L = $\\sqrt{1 + L}$ to get a quadratic equation: $L^2 = 1 + L$. Rearrange it to $L^2 - L - 1 = 0$. Remember, the golden ratio is the positive root.'",
+            "Marvin hums a convergence tune: '🎵 L-squared minus L minus one is zero, find the positive hero! The famous constant will make the engine glow! Use the quadratic formula!'🎵"
+        ];
+
+        const CLUES = [
+            "🔍 You observe the clock's gears spinning backward for a moment, revealing corrupted timestamps – signs of a recursive loop error. A faint, non-integer value is displayed on a nearby gauge.",
+            "🔍 A digital display flickers, showing a sequence of numbers: 1, 1, 2, 3, 5, 8, ... then glitches, failing to settle. The Fibonacci sequence is active, but something is wrong with its termination or ratio.",
+            "🔍 Marvin detects an interference pattern in the Clocktower's temporal field, a signature of the Shadow Compiler attempting to prevent a sequence from converging to its natural limit. He points to a diagram showing a spiral that doesn't quite close."
+        ];
+        const TOTAL_CLUES_NEEDED = CLUES.length;
+
+        const VICTORY_TEXT = "The Clocktower's gears whir back to life, and the temporal distortion dissipates. The Second Data Shard, shimmering with the golden light of the restored Golden Ratio, materializes from the heart of the engine!";
+        const THOMAS_VICTORY_DIALOGUE = "Incredible, Finja! The value is precisely the Golden Ratio, 1.618... You've stabilized the temporal algorithms and restored the engine's recursive integrity!";
+        const MARVIN_VICTORY_DIALOGUE = "🎵 Golden Ratio's might, sets the sequences right! Fibonacci's true path, escapes recursive wrath! The Clocktower sings again! 🎵";
+        const ALEX_VICTORY_DIALOGUE = "Remarkable! Your understanding of convergence and fixed points is exemplary. The Shadow Compiler's temporal attack has been thwarted! This data can help us predict future corruptions.";
+        const DATA_SHARD_NAME = "Golden Ratio Shard";
+
+        const CHAPTER_PROGRESS_SUMMARY_TEXT = "The Recursive Clocktower's temporal algorithms are restored, and the Golden Ratio Data Shard is secured. Two shards down, five to go. The Shadow Compiler's grip on New Cognitia's time streams has weakened, but it's regrouping.";
+        const NEXT_CHAPTER_LOCATION_HINT = "The Quantum Nexus, where data entanglement holds the next shard hostage! Prepare for quantum paradoxes!";
+
+        // --- END CHAPTER SPECIFIC CONTENT ---
+
+        const characterInfo = {
+            finja: "👑 As the legendary Archmage of Mathematics, you command respect throughout New Cognitia. Your theorem compass glows brighter in the presence of pure mathematical truth.",
+            thomas: "🔮 Thomas specializes in data enchantments, able to see the hidden patterns in corrupted algorithms. His crystal ball shows swirling probability distributions.",
+            marvin: "🎵 The Algorithm Bard's songs can literally debug code and boost team morale. His lute is strung with fiber optic cables that pulse with data.",
+            sven: "🛡️ A noble protector of secure systems, Sven's silver armor bears the emblem of the Cryptographic Order. His presence strengthens all defensive protocols.",
+            dirk: "⚔️ The Firewall Guardian's dark armor is inscribed with protective runes. He wields a two-handed sword that can slice through the most stubborn malware.",
+            hiromi: "🥷 Master of stealth and system infiltration, Hiromi can slip through network vulnerabilities undetected. Her daggers are USB keys with infinite storage.",
+            alex: "🧙 The Machine Learning Sage's neural networks can predict algorithmic behavior with uncanny accuracy. His robes shimmer with artificial intelligence.",
+            sebastian: "🪓 A fierce defender of data integrity, Sebastian's massive battle axe has cleaved through countless database corruptions. He never loses a single record.",
+            moritz: "🏹 The Network Ranger's arrows always find the fastest path through any network topology. His elven heritage grants him perfect packet routing abilities."
+        };
+
+        function createSteamParticles() {
+            const container = document.getElementById('steamContainer');
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'steam-particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = '100%'; // Start from bottom
+                    particle.style.animationDelay = Math.random() * 4 + 's';
+                    container.appendChild(particle);
+
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 4000);
+                }, Math.random() * 2000);
+            }
+        }
+
+        function typeWriter(text, element, speed = 50, callback) {
+            element.innerHTML = '';
+            element.style.borderRight = '2px solid #d4af37';
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    element.style.borderRight = 'none';
+                    if (callback) callback();
+                }
+            }, speed);
+        }
+
+        function updateProgress(percentage) {
+            document.getElementById('storyProgress').style.width = percentage + '%';
+        }
+
+        function beginChapter() {
+            gameState.storyPhase = 0;
+            showNextStoryPhase();
+        }
+
+        function showNextStoryPhase() {
+            if (gameState.storyPhase < storyPhases.length) {
+                const phase = storyPhases[gameState.storyPhase];
+                const container = document.getElementById('storyContainer');
+
+                container.innerHTML = `
+                    <div class="story-section fade-in">
+                        <h3 style="color: #ffd700; margin-bottom: 15px;">${phase.title}</h3>
+                        <div id="narrativeText">${phase.text}</div>
+                        <button class="action-btn" onclick="continueStory()" style="margin-top: 15px; width: 100%;">
+                            ${phase.action}
+                        </button>
+                    </div>
+                `;
+
+                updateProgress((gameState.storyPhase + 1) / storyPhases.length * 60);
+                gameState.storyPhase++;
+            } else {
+                showPuzzle();
+            }
+        }
+
+        function continueStory() {
+            showNextStoryPhase();
+        }
+
+        function showPuzzle() {
+            const container = document.getElementById('storyContainer');
+            container.innerHTML = `
+                <div class="story-section">
+                    <h3 style="color: #da70d6; margin-bottom: 15px;">∞ ${PUZZLE_TITLE}</h3>
+                    <p>${PUZZLE_DESCRIPTION}</p>
+
+                    <div class="team-dialogue">
+                        <div class="dialogue-speaker">🔮 ${PUZZLE_GUARDIAN_NAME}:</div>
+                        "${PUZZLE_CHALLENGE_DIALOGUE}"
+                        <br><br>
+                        <div style="text-align: center; font-family: 'Times New Roman', serif; font-size: 1.2em; color: #da70d6; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                            ${PUZZLE_FORMULA_DISPLAY}
+                        </div>
+                        "${PUZZLE_CLARIFICATION_DIALOGUE}"
+                    </div>
+
+                    <p style="color: #daa520; font-style: italic;">The puzzle awaits your answer. Your team stands ready to assist...</p>
+                </div>
+            `;
+
+            document.getElementById('puzzleBox').classList.remove('hidden');
+            document.getElementById('puzzleText').innerHTML =
+                `<strong>${PUZZLE_TITLE}:</strong><br><br>` +
+                `<div style='text-align: center; font-family: "Times New Roman", serif; font-size: 1.3em; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; margin: 15px 0;'>` +
+                `${PUZZLE_FORMULA_DISPLAY}` +
+                `</div>` +
+                `<em>${PUZZLE_INSTRUCTIONS}</em><br><br>` +
+                `<small style='color: #daa520;'>💡 Hint: ${PUZZLE_HINT_SHORT}</small>`;
+
+            document.getElementById('puzzleInput').placeholder = PUZZLE_INPUT_PLACEHOLDER;
+            updateProgress(70);
+        }
+
+        function checkPuzzle() {
+            const answer = document.getElementById('puzzleInput').value.trim().toLowerCase();
+
+            // Special handling for 'phi' and numerical comparisons for the golden ratio
+            const goldenRatio = (1 + Math.sqrt(5)) / 2;
+
+            const isCorrect = CORRECT_ANSWERS.some(correct =>
+                answer === correct ||
+                (correct === "phi" && answer === "phi") || // Check for 'phi' string
+                (parseFloat(answer) && Math.abs(parseFloat(answer) - goldenRatio) < 0.001)
+            );
+
+            if (isCorrect) {
+                solvePuzzle();
+            } else {
+                gameState.hintsUsed++;
+                showHint();
+            }
+        }
+
+        function showHint() {
+            const hintIndex = Math.min(gameState.hintsUsed - 1, HINTS.length - 1);
+            document.getElementById('hintText').innerHTML = HINTS[hintIndex];
+            document.getElementById('hintSection').classList.remove('hidden');
+        }
+
+        function solvePuzzle() {
+            gameState.puzzleSolved = true;
+            updateProgress(100);
+
+            // Save Chapter 2 completion
+            localStorage.setItem('chapter2_completed', 'true');
+            localStorage.setItem('game_progress', 'chapter3_unlocked');
+
+            const container = document.getElementById('storyContainer');
+            container.innerHTML = `
+                <div class="story-section celebration">
+                    <h3 style="color: #90EE90; margin-bottom: 15px;">🎉 VICTORY! ${PUZZLE_TITLE} Yields!</h3>
+
+                    <p style="color: #90EE90;">${VICTORY_TEXT}</p>
+
+                    <div class="team-dialogue">
+                        <div class="dialogue-speaker">🔮 Thomas (excited):</div>
+                        "${THOMAS_VICTORY_DIALOGUE}"
+                    </div>
+
+                    <div class="team-dialogue">
+                        <div class="dialogue-speaker">🎵 Marvin (singing triumphantly):</div>
+                        "${MARVIN_VICTORY_DIALOGUE}"
+                    </div>
+
+                    <div class="team-dialogue">
+                        <div class="dialogue-speaker">🧙 Alex (impressed):</div>
+                        "${ALEX_VICTORY_DIALOGUE}"
+                    </div>
+
+                    <p style="color: #ffd700; font-weight: bold; text-align: center; margin-top: 20px;">
+                        ⭐ Chapter ${CHAPTER_NUMBER} Complete! The adventure continues... ⭐
+                    </p>
+
+                    <button class="action-btn" onclick="showChapterSummary()" style="margin-top: 20px; width: 100%; background: linear-gradient(45deg, #228b22, #32cd32);">
+                        🏆 View Chapter Summary
+                    </button>
+                     <button class="action-btn" onclick="window.location.href='chapter_select.html'" style="margin-top: 10px; width: 100%; background: linear-gradient(45deg, #4b0082, #8a2be2);">
+                        ➡️ Proceed to Chapter Select
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('puzzleBox').classList.add('hidden');
+            updateChapterStatus();
+            celebrateVictory();
+        }
+
+        function celebrateVictory() {
+            document.body.style.animation = 'celebrate 2s ease-in-out';
+
+            const characters = document.querySelectorAll('.character');
+            characters.forEach(char => {
+                char.style.background = 'rgba(50, 205, 50, 0.3)';
+                setTimeout(() => {
+                    char.style.background = 'rgba(139, 69, 19, 0.4)';
+                }, 3000);
+            });
+
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createCelebrationParticle();
+                }, i * 50);
+            }
+        }
+
+        function createCelebrationParticle() {
+            const particle = document.createElement('div');
+            particle.innerHTML = ['⭐', '✨', '🎉', '💫', '🌟'][Math.floor(Math.random() * 5)];
+            particle.style.position = 'fixed';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = '100%';
+            particle.style.fontSize = '2em';
+            particle.style.zIndex = '1000';
+            particle.style.pointerEvents = 'none';
+            particle.style.animation = 'steam-rise 3s ease-out forwards';
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 3000);
+        }
+
+        function updateChapterStatus() {
+            document.getElementById('chapterStatus').innerHTML = `
+                <div>🗺️ Location: ${LOCATION_NAME}</div>
+                <div style="color: #90EE90;">✅ Objective: ${gameState.puzzleSolved ? 'COMPLETE!' : 'Repair Fibonacci Engine'}</div>
+                <div style="color: #90EE90;">🔍 Clues Found: ${TOTAL_CLUES_NEEDED}/${TOTAL_CLUES_NEEDED}</div>
+                <div style="color: #90EE90;">💎 Data Shards: 1/1</div>
+                <div style="color: #90EE90;">✨ Team Morale: TRIUMPHANT!</div>
+                <div style="color: #ffd700; margin-top: 10px;">🏆 Chapter ${CHAPTER_NUMBER}: COMPLETED!</div>
+            `;
+        }
+
+        function showChapterSummary() {
+            alert(CHAPTER_PROGRESS_SUMMARY_TEXT); // Now directly uses the const
+        }
+
+        function showTeamStatus() {
+            const status = `
+👥 TEAM STATUS REPORT 👥
+
+🎭 Current Location: ${LOCATION_NAME}
+⚡ Overall Morale: ${gameState.puzzleSolved ? 'TRIUMPHANT!' : 'Ready for action!'}
+
+Team Members:
+👑 Finja (You) - Mathematical leadership is inspiring everyone
+🔮 Thomas - Analyzing temporal paradoxes
+🎵 Marvin - Tuning temporal harmonies
+🛡️ Sven - Reinforcing chronological defenses
+⚔️ Dirk - Detecting time-based intrusions
+🥷 Hiromi - Navigating recursive pathways
+🧙 Alex - Predicting temporal shifts
+🪓 Sebastian - Protecting temporal data integrity
+🏹 Moritz - Mapping chronological network flows
+
+💪 All team members are healthy and ready for the next challenge!
+            `;
+            alert(status);
+        }
+
+        function examineEnvironment() {
+            gameState.cluesFound = Math.min(gameState.cluesFound + 1, TOTAL_CLUES_NEEDED);
+
+            const clueIndex = gameState.cluesFound - 1;
+            if (CLUES[clueIndex]) {
+                alert(CLUES[clueIndex]);
+            } else {
+                alert("You've already found all available clues in this area. Time to focus on the puzzle!");
+            }
+
+            updateChapterProgress();
+        }
+
+        function showInventory() {
+            alert(`
+🎒 FINJA'S MATHEMATICAL ARSENAL 🎒
+
+🔧 Equipment Status:
+✅ Analytical Engine Tablet - Fully charged
+✅ Theorem Compass - Pointing toward mathematical truth
+✅ Data Crystal Resonator - Detecting corruption signatures
+✅ Team Communication Device - All channels clear
+✅ Euler's Memorial Badge - Granting access to sacred mathematics
+✅ Temporal Calibration Device - Newly acquired, essential for time-based puzzles!
+
+${gameState.puzzleSolved ? '💎 DATA SHARD ACQUIRED: ${DATA_SHARD_NAME}' : '🔍 Searching for Data Shards...'}
+
+💡 Special Abilities Available:
+• Mathematical Insight (unlimited uses)
+• Team Consultation (ask teammates for hints)
+• Environmental Analysis (discover hidden clues)
+• Algorithm Debugging (cleanse corrupted code)
+            `);
+        }
+
+        function showCharacterInfo(character) {
+            const info = characterInfo[character];
+            alert(info);
+        }
+
+        // Initialize the game
+        window.onload = function() {
+            createSteamParticles();
+
+            // Populate chapter-specific static elements (already set in HTML but good practice)
+            document.getElementById('chapterSubtitle').innerText = `Chapter ${CHAPTER_NUMBER}: ${CHAPTER_TITLE}`;
+            document.getElementById('chapterLocation').innerText = `Location: ${LOCATION_NAME}`;
+            document.getElementById('locationSubtitle').innerText = LOCATION_SUBTITLE;
+            // The image is now set via background-image in the style attribute directly in HTML
+            // document.getElementById('sceneImage').innerHTML = `${SCENE_IMAGE_EMOJIS}<div class="gear-animation">⚙️</div>`;
+            document.getElementById('storyProgress').style.width = '0%'; // Reset progress for new chapter
+            document.getElementById('chapterStatus').innerHTML = `
+                <div>🗺️ Location: ${LOCATION_NAME}</div>
+                <div>🎯 Objective: Repair Fibonacci Engine</div>
+                <div>🔍 Clues Found: 0/${TOTAL_CLUES_NEEDED}</div>
+                <div>💎 Data Shards: 0/1</div>
+                <div style="color: #90EE90;">✨ Team Morale: Excellent!</div>
+            `;
+            document.querySelector('.actions .action-btn').innerText = `🚀 Begin Chapter ${CHAPTER_NUMBER}`;
+            document.querySelector('.actions .action-btn:nth-child(3)').innerText = `🔍 Examine ${LOCATION_NAME}`;
+
+
+            // Continue creating steam particles periodically
+            setInterval(createSteamParticles, 8000);
+
+            typeWriter(INITIAL_NARRATIVE_TEXT,
+                      document.getElementById('narrativeText'));
+
+            // Add some atmospheric gear rotation
+            setInterval(() => {
+                const gear = document.querySelector('.gear-animation');
+                if (gear) {
+                    // gear.style.color = Math.random() > 0.5 ? '#ffd700' : '#d4af37'; // Example: optional color flicker
+                }
+            }, 3000);
+        };
+
+        // Add Enter key support for puzzle input
+        document.addEventListener('DOMContentLoaded', function() {
+            const puzzleInput = document.getElementById('puzzleInput');
+            if (puzzleInput) {
+                puzzleInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPuzzle();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
