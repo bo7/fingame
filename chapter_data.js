@@ -40,12 +40,7 @@ const chapterData = {
 
         PUZZLE_TITLE: 'The Limit Lock Challenge',
         PUZZLE_DESCRIPTION: "Before you stands an ancient mechanism covered in calculus symbols and infinite series. Steam hisses from bronze pipes as gears inscribed with Taylor polynomials slowly rotate. A crystalline voice echoes from within:",
-        // Using a more reliable approach for the formula display
-        PUZZLE_FORMULA_DISPLAY: `<div class="math-formula" id="limitFormula">
-            <span style="font-size: 1.5em; color: #ffd700;">
-                lim<sub>x→0</sub> (sin(x) - x·cos(x))/x<sup>3</sup>
-            </span>
-        </div>`,
+        PUZZLE_FORMULA_DISPLAY: `$$\\lim_{x \\to 0} \\frac{\\sin(x) - x \\cos(x)}{x^3}$$`,
         PUZZLE_HINT_SHORT: "Consider Taylor series expansions or L'Hôpital's rule...",
         PUZZLE_INPUT_PLACEHOLDER: "Enter the limit value (fraction or decimal)...",
         PUZZLE_INSTRUCTIONS: "Find the exact value of this limit. The ancient mechanisms require precision to the nearest simple fraction.",
@@ -105,8 +100,7 @@ const chapterData = {
 
         PUZZLE_TITLE: 'The Golden Ratio Recursion',
         PUZZLE_DESCRIPTION: "A critical component of the Fibonacci Engine, the Golden Ratio, has been destabilized. You must determine the limit of a specific sequence to recalibrate it.",
-        PUZZLE_FORMULA_DISPLAY: `Consider the sequence given by the recurrence relation: $a_{n+1} = \\sqrt{1 + a_n}$ for $n \\ge 1$, with $a_1 = 1$.<br>
-                                        Find the exact value of $\\lim_{n \\to \\infty} a_n$.`,
+        PUZZLE_FORMULA_DISPLAY: `Consider the sequence given by the recurrence relation: $$a_{n+1} = \\sqrt{1 + a_n}$$ for $$n \\geq 1$$, with $$a_1 = 1$$.<br><br>Find the exact value of $$\\lim_{n \\to \\infty} a_n$$.`,
         PUZZLE_HINT_SHORT: "Assume the limit exists and substitute it back into the recurrence relation.",
         PUZZLE_INPUT_PLACEHOLDER: "Enter the limit value (e.g., 'phi' or '1.618')...",
         PUZZLE_INSTRUCTIONS: "Find the exact value of this limit. Precision is key. You may use a fraction or the special constant 'phi' or its decimal approximation.",
@@ -166,7 +160,7 @@ const chapterData = {
 
         PUZZLE_TITLE: 'Quantum Eigenvalue Challenge',
         PUZZLE_DESCRIPTION: "The quantum console displays a complex Hermitian matrix. The system requires the eigenvalues to stabilize the quantum field. The matrix is:",
-        PUZZLE_FORMULA_DISPLAY: `$$\begin{bmatrix} 2 & 1-i & 0 \\ 1+i & 1 & 1 \\ 0 & 1 & 3 \end{bmatrix}$$`,
+        PUZZLE_FORMULA_DISPLAY: `$$\\begin{bmatrix} 2 & 1-i & 0 \\\\ 1+i & 1 & 1 \\\\ 0 & 1 & 3 \\end{bmatrix}$$`,
         PUZZLE_HINT_SHORT: "For a 3×3 Hermitian matrix, the eigenvalues are real numbers. The characteristic polynomial is cubic.",
         PUZZLE_INPUT_PLACEHOLDER: "Enter eigenvalues as comma-separated values (e.g., 1,2,3)",
         PUZZLE_INSTRUCTIONS: "Find all eigenvalues of the given Hermitian matrix. Enter them in increasing order, separated by commas.",
@@ -181,13 +175,21 @@ const chapterData = {
             "Marvin sings: '🎵 Cubic equations can be tough, Cardano's formula is rough! Try x = 2cosθ, it might be enough! 🎵'"
         ],
 
+        CLUES: [
+            "🔍 You notice quantum interference patterns in the lab's holographic displays, suggesting the matrix eigenvalues are being scrambled by external forces.",
+            "🔍 The quantum field stabilizers show three distinct resonance frequencies, hinting at the number of eigenvalues you need to find.",
+            "🔍 Ancient quantum inscriptions on the lab walls glow with Hermitian symmetry patterns, confirming that all eigenvalues must be real numbers."
+        ],
+
+        VICTORY_TEXT: "The quantum field stabilizes instantly as the correct eigenvalues resonate through the matrix! The Third Data Shard materializes from the quantum foam, pulsing with eigenvalue energy!",
         THOMAS_VICTORY_DIALOGUE: "Brilliant! The quantum field stabilizes immediately. Your understanding of linear algebra is truly exceptional, Finja!",
         MARVIN_VICTORY_DIALOGUE: "🎵 Eigenvalues aligned just right, quantum states now shining bright! The matrix is stable, the future's now stable! 🎵",
         ALEX_VICTORY_DIALOGUE: "Fascinating! Your solution has given us new insights into quantum state manipulation. The Shadow Compiler's interference patterns are becoming clearer now.",
         DATA_SHARD_NAME: "Quantum Matrix Shard",
 
         CHAPTER_PROGRESS_SUMMARY_TEXT: "The quantum matrix has been stabilized, but the Shadow Compiler's influence is spreading through higher-dimensional spaces. The fourth Data Shard is now within reach.",
-        NEXT_CHAPTER_LOCATION_HINT: "The Neural Network Nexus, where machine learning models have gained sentience!"
+        NEXT_CHAPTER_LOCATION_HINT: "The Neural Network Nexus, where machine learning models have gained sentience!",
+        SAVE_FLAG: 'chapter3_completed'
     },
     'chapter4': {
         CHAPTER_NUMBER: 'IV',
@@ -219,14 +221,14 @@ const chapterData = {
         PUZZLE_TITLE: 'Survival Prediction Challenge',
         PUZZLE_DESCRIPTION: "Using the Titanic dataset, analyze the patterns in the data to predict the survival probability for the given passenger. Consider factors like gender, class, age, and fare.",
         PUZZLE_FORMULA_DISPLAY: `
-            Passenger Details:
-            - Age: 28
-            - Sex: Female
-            - Class: 1st
-            - Siblings/Spouses: 2
-            - Parents/Children: 0
-            - Fare: $80
-            - Embarked: Southampton
+            <strong>Passenger Details:</strong><br>
+            • Age: 28<br>
+            • Sex: Female<br>
+            • Class: 1st<br>
+            • Siblings/Spouses: 2<br>
+            • Parents/Children: 0<br>
+            • Fare: $80<br>
+            • Embarked: Southampton
         `,
         PUZZLE_HINT_SHORT: "In the training data, 1st class female passengers had a survival rate of about 96.8%.",
         PUZZLE_INPUT_PLACEHOLDER: "Enter survival probability (0-100%)",
@@ -242,13 +244,21 @@ const chapterData = {
             "Marvin sings: '🎵 Women and children first, that's the rule, in this data science tool! First class and female too, her chances are looking true! Check the data, don't be a fool, at Stanford's link, it's really cool! 🎵'"
         ],
 
+        CLUES: [
+            "🔍 You examine historical survival data and notice that passenger class was a major factor - 1st class passengers had much higher survival rates than 3rd class.",
+            "🔍 The data shows a clear gender bias in survival rates - women had significantly higher survival rates than men across all classes.",
+            "🔍 Age patterns in the data reveal that younger passengers generally had better survival chances, especially when combined with higher class status."
+        ],
+
+        VICTORY_TEXT: "The prediction model springs back to life, its algorithms now perfectly calibrated! The Fourth Data Shard emerges from the data stream, glowing with statistical certainty!",
         THOMAS_VICTORY_DIALOGUE: "Brilliant analysis, Finja! Your prediction of 97% matches the historical patterns perfectly. The model's accuracy is now 89% - the highest it's ever been!",
         MARVIN_VICTORY_DIALOGUE: "🎵 Numbers don't lie, the data's clear, your prediction brings victory near! The Shadow Compiler's losing might, thanks to your data science sight! 🎵",
         ALEX_VICTORY_DIALOGUE: "Fascinating! Your understanding of feature importance and statistical patterns is exceptional. The model is now making accurate predictions again.",
         DATA_SHARD_NAME: "Data Science Shard",
 
         CHAPTER_PROGRESS_SUMMARY_TEXT: "The prediction model has been restored, revealing the location of the next Data Shard. The Shadow Compiler's influence is weakening, but we must remain vigilant.",
-        NEXT_CHAPTER_LOCATION_HINT: "The Cryptographic Citadel, where the final encryption keys are stored..."
+        NEXT_CHAPTER_LOCATION_HINT: "The Cryptographic Citadel, where the final encryption keys are stored...",
+        SAVE_FLAG: 'chapter4_completed'
     }
 };
 
@@ -312,39 +322,6 @@ function continueStory() {
     showNextStoryPhase();
 }
 
-function showPuzzle() {
-    const container = document.getElementById('storyContainer');
-    container.innerHTML = `
-        <div class="story-section">
-            <h3 style="color: #da70d6; margin-bottom: 15px;">∞ ${currentChapterData.PUZZLE_TITLE}</h3>
-            <p>${currentChapterData.PUZZLE_DESCRIPTION}</p>
-
-            <div class="team-dialogue">
-                <div class="dialogue-speaker">🔮 ${currentChapterData.PUZZLE_GUARDIAN_NAME}:</div>
-                "${currentChapterData.PUZZLE_CHALLENGE_DIALOGUE}"
-                <br><br>
-                <div style="text-align: center; font-family: 'Times New Roman', serif; font-size: 1.2em; color: #da70d6; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin: 10px 0;">
-                    ${currentChapterData.PUZZLE_FORMULA_DISPLAY}
-                </div>
-                "${currentChapterData.PUZZLE_CLARIFICATION_DIALOGUE}"
-            </div>
-
-            <p style="color: #daa520; font-style: italic;">The puzzle awaits your answer. Your team stands ready to assist...</p>
-        </div>
-    `;
-
-    document.getElementById('puzzleBox').classList.remove('hidden');
-    document.getElementById('puzzleText').innerHTML =
-        `<strong>${currentChapterData.PUZZLE_TITLE}:</strong><br><br>` +
-        `<div style='text-align: center; font-family: "Times New Roman", serif; font-size: 1.3em; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; margin: 15px 0;'>` +
-        `${currentChapterData.PUZZLE_FORMULA_DISPLAY}` +
-        `</div>` +
-        `<em>${currentChapterData.PUZZLE_INSTRUCTIONS}</em><br><br>` +
-        `<small style='color: #daa520;'>💡 Hint: ${currentChapterData.PUZZLE_HINT_SHORT}</small>`;
-
-    updateProgress(70);
-}
-
 function checkPuzzle() {
     const answer = document.getElementById('puzzleInput').value.trim().toLowerCase();
     let isCorrect = false;
@@ -363,8 +340,13 @@ function checkPuzzle() {
             (correct === "phi" && answer === "phi") ||
             (parseFloat(answer) && Math.abs(parseFloat(answer) - goldenRatio) < 0.001)
         );
+    } else if (currentChapterData.CHAPTER_NUMBER === 'III') {
+        // Chapter 3 eigenvalue checking
+        isCorrect = currentChapterData.CORRECT_ANSWERS.some(correct => answer === correct);
+    } else if (currentChapterData.CHAPTER_NUMBER === 'IV') {
+        // Chapter 4 Titanic survival prediction checking
+        isCorrect = currentChapterData.CORRECT_ANSWERS.some(correct => answer === correct);
     }
-    // Add conditions for other chapters' puzzles here
 
     if (isCorrect) {
         solvePuzzle();
@@ -372,13 +354,6 @@ function checkPuzzle() {
         gameState.hintsUsed++;
         showHint();
     }
-}
-
-function showHint() {
-    const hints = currentChapterData.HINTS;
-    const hintIndex = Math.min(gameState.hintsUsed - 1, hints.length - 1);
-    document.getElementById('hintText').innerHTML = hints[hintIndex];
-    document.getElementById('hintSection').classList.remove('hidden');
 }
 
 function solvePuzzle() {

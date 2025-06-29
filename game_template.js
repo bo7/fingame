@@ -351,41 +351,67 @@ window.fixFormula = function() {
     return 'Formula fix attempted';
 };
 
+// FIXED: This function was the source of the caching issue!
 function showPuzzle() {
-    console.log('🔴 UPDATED showPuzzle FUNCTION CALLED');
+    console.log('🔴 SHOWING PUZZLE FOR CHAPTER:', currentChapterData.CHAPTER_NUMBER);
+    
+    const container = document.getElementById('storyContainer');
+    container.innerHTML = `
+        <div class="story-section">
+            <h3 style="color: #da70d6; margin-bottom: 15px;">∞ ${currentChapterData.PUZZLE_TITLE}</h3>
+            <p>${currentChapterData.PUZZLE_DESCRIPTION}</p>
+
+            <div class="team-dialogue">
+                <div class="dialogue-speaker">🔮 ${currentChapterData.PUZZLE_GUARDIAN_NAME}:</div>
+                "${currentChapterData.PUZZLE_CHALLENGE_DIALOGUE}"
+                <br><br>
+                <div style="text-align: center; font-family: 'Times New Roman', serif; font-size: 1.2em; color: #da70d6; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    ${currentChapterData.PUZZLE_FORMULA_DISPLAY}
+                </div>
+                "${currentChapterData.PUZZLE_CLARIFICATION_DIALOGUE}"
+            </div>
+
+            <p style="color: #daa520; font-style: italic;">The puzzle awaits your answer. Your team stands ready to assist...</p>
+        </div>
+    `;
+
+    // Show the puzzle box with the correct content
     const puzzleBox = document.getElementById('puzzleBox');
     const puzzleText = document.getElementById('puzzleText');
     const puzzleInput = document.getElementById('puzzleInput');
     
-    if (currentChapterData) {
-        // Use the original approach to set the content
-        const puzzleHTML = currentChapterData.PUZZLE_DESCRIPTION + '<br><br>' + 
-                         currentChapterData.PUZZLE_FORMULA_DISPLAY + '<br><br>' + 
-                         currentChapterData.PUZZLE_INSTRUCTIONS;
-        
-        // Set the content and show the box
-        puzzleText.innerHTML = puzzleHTML;
-        puzzleInput.placeholder = currentChapterData.PUZZLE_INPUT_PLACEHOLDER;
-        puzzleBox.classList.remove('hidden');
-        
-        // Scroll to the puzzle
-        puzzleBox.scrollIntoView({ behavior: 'smooth' });
-        
-        // Process with MathJax
-        if (window.MathJax && window.MathJax.Hub) {
-            console.log('Processing puzzle with MathJax');
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub, puzzleText]);
-            
-            // After MathJax processing, try to fix the formula directly
-            MathJax.Hub.Queue(() => {
-                console.log('MathJax initial processing completed, now fixing formula...');
-                window.fixFormula();
-                puzzleInput.focus();
-            });
-        } else {
-            console.warn('MathJax not available');
+    puzzleBox.classList.remove('hidden');
+    
+    // Set the puzzle content using the current chapter data
+    puzzleText.innerHTML = `
+        <strong>${currentChapterData.PUZZLE_TITLE}:</strong><br><br>
+        <div style='text-align: center; font-family: "Times New Roman", serif; font-size: 1.3em; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; margin: 15px 0;'>
+            ${currentChapterData.PUZZLE_FORMULA_DISPLAY}
+        </div>
+        <em>${currentChapterData.PUZZLE_INSTRUCTIONS}</em><br><br>
+        <small style='color: #daa520;'>💡 Hint: ${currentChapterData.PUZZLE_HINT_SHORT}</small>
+    `;
+    
+    puzzleInput.placeholder = currentChapterData.PUZZLE_INPUT_PLACEHOLDER;
+    puzzleInput.value = ''; // Clear any previous input
+    
+    updateProgress(70);
+    
+    // Scroll to the puzzle
+    puzzleBox.scrollIntoView({ behavior: 'smooth' });
+    
+    // Process with MathJax
+    if (window.MathJax && window.MathJax.Hub) {
+        console.log('Processing puzzle with MathJax for chapter:', currentChapterData.CHAPTER_NUMBER);
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, container]);
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, puzzleText]);
+        MathJax.Hub.Queue(() => {
+            console.log('MathJax rendering completed for puzzle');
             puzzleInput.focus();
-        }
+        });
+    } else {
+        console.warn('MathJax not available');
+        puzzleInput.focus();
     }
 }
 
