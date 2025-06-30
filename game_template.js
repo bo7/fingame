@@ -351,9 +351,10 @@ window.fixFormula = function() {
     return 'Formula fix attempted';
 };
 
-// FIXED: This function was the source of the caching issue!
+// FIXED: This function now properly uses currentChapterData instead of hardcoded formulas
 function showPuzzle() {
     console.log('🔴 SHOWING PUZZLE FOR CHAPTER:', currentChapterData.CHAPTER_NUMBER);
+    console.log('🔴 PUZZLE FORMULA:', currentChapterData.PUZZLE_FORMULA_DISPLAY);
     
     const container = document.getElementById('storyContainer');
     container.innerHTML = `
@@ -382,6 +383,9 @@ function showPuzzle() {
     
     puzzleBox.classList.remove('hidden');
     
+    // FIXED: Clear the puzzle text completely and rebuild it with current chapter data
+    puzzleText.innerHTML = '';
+    
     // Set the puzzle content using the current chapter data
     puzzleText.innerHTML = `
         <strong>${currentChapterData.PUZZLE_TITLE}:</strong><br><br>
@@ -400,13 +404,23 @@ function showPuzzle() {
     // Scroll to the puzzle
     puzzleBox.scrollIntoView({ behavior: 'smooth' });
     
-    // Process with MathJax
+    // FIXED: Clear MathJax cache and force complete re-rendering
     if (window.MathJax && window.MathJax.Hub) {
-        console.log('Processing puzzle with MathJax for chapter:', currentChapterData.CHAPTER_NUMBER);
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub, container]);
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub, puzzleText]);
+        console.log('🔴 CLEARING MATHJAX CACHE AND RE-RENDERING FOR CHAPTER:', currentChapterData.CHAPTER_NUMBER);
+        
+        // Clear MathJax's internal cache
+        if (window.MathJax.Hub.getAllJax) {
+            const jaxElements = window.MathJax.Hub.getAllJax();
+            jaxElements.forEach(jax => {
+                if (jax.Remove) jax.Remove();
+            });
+        }
+        
+        // Force complete reprocessing of both containers
+        MathJax.Hub.Queue(['Reprocess', MathJax.Hub, container]);
+        MathJax.Hub.Queue(['Reprocess', MathJax.Hub, puzzleText]);
         MathJax.Hub.Queue(() => {
-            console.log('MathJax rendering completed for puzzle');
+            console.log('🔴 MathJax rendering completed for chapter:', currentChapterData.CHAPTER_NUMBER);
             puzzleInput.focus();
         });
     } else {
