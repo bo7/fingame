@@ -32,10 +32,22 @@
             <a href="chapter_loader.html?chapter=chapter2" class="chapter-btn disabled" id="chapter2Btn">
                 Chapter II: The Recursive Clocktower <span class="lock-icon">🔒</span>
             </a>
-            <a href="#" class="chapter-btn disabled" id="chapter3Btn">
-                Chapter III: The Quantum Nexus (Coming Soon) <span class="lock-icon">🔒</span>
+            <a href="chapter_loader.html?chapter=chapter3" class="chapter-btn disabled" id="chapter3Btn">
+                Chapter III: The Quantum Matrix Labyrinth <span class="lock-icon">🔒</span>
             </a>
-            </div>
+            <a href="chapter_loader.html?chapter=chapter4" class="chapter-btn disabled" id="chapter4Btn">
+                Chapter IV: The Titanic Data Vault <span class="lock-icon">🔒</span>
+            </a>
+            <a href="chapter_loader.html?chapter=chapter5" class="chapter-btn disabled" id="chapter5Btn">
+                Chapter V: The Cryptographic Citadel <span class="lock-icon">🔒</span>
+            </a>
+            <a href="chapter_loader.html?chapter=chapter6" class="chapter-btn disabled" id="chapter6Btn">
+                Chapter VI: The Statistical Observatory <span class="lock-icon">🔒</span>
+            </a>
+            <a href="chapter_loader.html?chapter=chapter7" class="chapter-btn disabled" id="chapter7Btn">
+                Chapter VII: The Finja Files <span class="lock-icon">🔒</span>
+            </a>
+        </div>
 
         <button class="start-game-btn" onclick="resetGameProgress()">🔄 Reset Game Progress</button>
     </div>
@@ -46,47 +58,49 @@
         function checkChapterStatus() {
             const chapter1Completed = localStorage.getItem('chapter1_completed');
             const chapter2Completed = localStorage.getItem('chapter2_completed');
+            const chapter3Completed = localStorage.getItem('chapter3_completed');
+            const chapter4Completed = localStorage.getItem('chapter4_completed');
+            const chapter5Completed = localStorage.getItem('chapter5_completed');
+            const chapter6Completed = localStorage.getItem('chapter6_completed');
+            const chapter7Completed = localStorage.getItem('chapter7_completed');
 
-            const chapter1Btn = document.getElementById('chapter1Btn');
-            const chapter2Btn = document.getElementById('chapter2Btn');
-            const chapter3Btn = document.getElementById('chapter3Btn');
+            const chapters = [
+                { btn: 'chapter1Btn', status: 'chapter1Status', completed: chapter1Completed, unlocked: true },
+                { btn: 'chapter2Btn', completed: chapter2Completed, unlocked: chapter1Completed === 'true' },
+                { btn: 'chapter3Btn', completed: chapter3Completed, unlocked: chapter2Completed === 'true' },
+                { btn: 'chapter4Btn', completed: chapter4Completed, unlocked: chapter3Completed === 'true' },
+                { btn: 'chapter5Btn', completed: chapter5Completed, unlocked: chapter4Completed === 'true' },
+                { btn: 'chapter6Btn', completed: chapter6Completed, unlocked: chapter5Completed === 'true' },
+                { btn: 'chapter7Btn', completed: chapter7Completed, unlocked: chapter6Completed === 'true' }
+            ];
 
-            const chapter1Status = document.getElementById('chapter1Status');
-            const chapter2Status = chapter2Btn.querySelector('.lock-icon');
-            const chapter3Status = chapter3Btn.querySelector('.lock-icon');
+            chapters.forEach((chapter, index) => {
+                const btn = document.getElementById(chapter.btn);
+                const statusElement = chapter.status ? document.getElementById(chapter.status) : btn.querySelector('.lock-icon');
 
-
-            // Chapter 1 status (always enabled, but show completion)
-            if (chapter1Completed === 'true') {
-                chapter1Status.innerHTML = '✅';
-            } else {
-                chapter1Status.innerHTML = '';
-            }
-
-            // Chapter 2 status
-            if (chapter1Completed === 'true') {
-                chapter2Btn.classList.remove('disabled');
-                chapter2Btn.onclick = null; // Remove the disable alert
-                if (chapter2Completed === 'true') {
-                    chapter2Status.innerHTML = '✅';
+                if (chapter.unlocked) {
+                    btn.classList.remove('disabled');
+                    btn.onclick = null;
+                    
+                    if (chapter.completed === 'true') {
+                        statusElement.innerHTML = '✅';
+                    } else {
+                        statusElement.innerHTML = '➡️';
+                    }
                 } else {
-                    chapter2Status.innerHTML = '➡️'; // Indicate ready to play
+                    btn.classList.add('disabled');
+                    btn.onclick = function(event) { 
+                        event.preventDefault(); 
+                        alert(`Complete Chapter ${index} first!`); 
+                    };
+                    statusElement.innerHTML = '🔒';
                 }
-            } else {
-                chapter2Btn.classList.add('disabled');
-                chapter2Btn.onclick = function(event) { event.preventDefault(); alert('Complete Chapter I first!'); };
-                chapter2Status.innerHTML = '🔒';
-            }
+            });
 
-            // Chapter 3 status (example)
-            if (chapter2Completed === 'true') { // Chapter 3 unlocks after Chapter 2
-                chapter3Btn.classList.remove('disabled');
-                chapter3Btn.onclick = null;
-                chapter3Status.innerHTML = '➡️'; // Indicate ready to play
-            } else {
-                chapter3Btn.classList.add('disabled');
-                chapter3Btn.onclick = function(event) { event.preventDefault(); alert('Complete Chapter II first!'); };
-                chapter3Status.innerHTML = '🔒';
+            // Special message for completing all chapters
+            if (chapter7Completed === 'true') {
+                const title = document.querySelector('.title');
+                title.innerHTML = 'The Data Pipeline Conspiracy<br><small style="color: #90EE90;">🏆 LEGENDARY QUEST COMPLETE! 🏆</small>';
             }
         }
 
