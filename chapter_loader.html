@@ -5,18 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">Loading Chapter...</title>
     <link rel="stylesheet" href="style.css">
-    <!-- MathJax configuration (same as the working test.html) -->
+    <!-- Enhanced MathJax configuration for better formula rendering -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       tex2jax: {
         inlineMath: [['$','$'], ['\\(','\\)']],
         displayMath: [['$$','$$'], ['\\[','\\]']],
-        processEscapes: true
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"]
+      },
+      "HTML-CSS": {
+        availableFonts: ["TeX"],
+        preferredFont: "TeX",
+        webFont: "TeX",
+        imageFont: null,
+        scale: 120,
+        styles: {
+          ".MathJax": {
+            color: "#ffd700 !important"
+          }
+        }
+      },
+      SVG: {
+        scale: 120,
+        styles: {
+          ".MathJax_SVG": {
+            color: "#ffd700 !important"
+          }
+        }
       }
     });
+    
     // Register a callback for when MathJax is fully initialized
     MathJax.Hub.Register.StartupHook("End", function() {
-      console.log('MathJax is ready');
+      console.log('MathJax is ready and configured');
       window.mathJaxReady = true;
     });
     </script>
@@ -97,8 +124,14 @@
                 alert('You must complete Chapter I first to access this chapter!');
                 window.location.href = 'chapter_select.html';
             }
-            // Add checks for other chapters here:
-            // else if (chapterId === 'chapter3' && localStorage.getItem('chapter2_completed') !== 'true') { /* ... */ }
+            if (chapterId === 'chapter3' && localStorage.getItem('chapter2_completed') !== 'true') {
+                alert('You must complete Chapter II first to access this chapter!');
+                window.location.href = 'chapter_select.html';
+            }
+            if (chapterId === 'chapter4' && localStorage.getItem('chapter3_completed') !== 'true') {
+                alert('You must complete Chapter III first to access this chapter!');
+                window.location.href = 'chapter_select.html';
+            }
 
             // Generate the entire game layout using the template function
             generateGameLayout(currentChapterData);

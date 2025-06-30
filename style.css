@@ -488,15 +488,15 @@ body.modal-open {
     transition: width 1s ease-in-out;
 }
 
-.celebration {
-    animation: celebrate 2s ease-in-out;
-}
-
 /* Special styling for final victory */
 .final-victory {
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 237, 78, 0.1));
     border: 3px solid #ffd700;
     box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.celebration {
+    animation: celebrate 2s ease-in-out;
 }
 
 @keyframes celebrate {
@@ -618,7 +618,7 @@ body.modal-open {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Math formula styling */
+/* Enhanced Math formula styling */
 .math-formula {
     padding: 15px;
     margin: 15px 0;
@@ -629,18 +629,49 @@ body.modal-open {
     border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-/* Make MathJax output more visible */
-.MathJax {
-    color: #ffd700 !important;
-    font-size: 1.3em !important;
+.math-formula-container {
+    padding: 15px;
+    margin: 15px 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-/* Ensure MathJax SVG elements are visible */
+/* Enhanced MathJax styling for better visibility */
+.MathJax {
+    color: #ffd700 !important;
+    font-size: 1.4em !important;
+}
+
+.MathJax_Display {
+    color: #ffd700 !important;
+    margin: 15px auto !important;
+}
+
+/* Ensure MathJax SVG elements are visible and properly styled */
 .MathJax_SVG_Display {
-    margin: 10px auto !important;
+    margin: 15px auto !important;
     text-align: center !important;
 }
 
 .MathJax_SVG {
     display: inline-block !important;
+    color: #ffd700 !important;
+}
+
+/* Force MathJax elements to use our color scheme */
+.MathJax_SVG * {
+    fill: #ffd700 !important;
+    stroke: #ffd700 !important;
+}
+
+/* Additional styling for inline math */
+.MathJax_Preview {
+    color: #ffd700 !important;
+}
+
+/* Ensure processed math elements maintain styling */
+.MathJax_processed {
+    color: #ffd700 !important;
 }

@@ -91,6 +91,11 @@ function resetGameProgress() {
         // Clear all chapter completion flags
         localStorage.removeItem('chapter1_completed');
         localStorage.removeItem('chapter2_completed');
+        localStorage.removeItem('chapter3_completed');
+        localStorage.removeItem('chapter4_completed');
+        localStorage.removeItem('chapter5_completed');
+        localStorage.removeItem('chapter6_completed');
+        localStorage.removeItem('chapter7_completed');
         
         // Optional: Clear any other game state if needed
         // localStorage.removeItem('gameState');
@@ -285,10 +290,9 @@ function showHint() {
             gameState.hintsUsed++;
         }
         
-        // Direct MathJax rendering using the same approach as the test page
-        if (window.MathJax && window.MathJax.Hub) {
-            console.log('Directly calling MathJax.Hub.Queue for hint text');
-            // Force MathJax to process the hint text
+        // Enhanced MathJax rendering for hints
+        if (window.MathJax && window.MathJax.Hub && window.mathJaxReady) {
+            console.log('Processing hint with MathJax');
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, hintText]);
             MathJax.Hub.Queue(() => {
                 console.log('MathJax rendering completed for hint');
@@ -299,59 +303,45 @@ function showHint() {
     }
 }
 
-// Special function to insert a LaTeX formula directly
-function insertLaTeXFormula(elementId, formula) {
+// Enhanced MathJax formula rendering function
+function renderMathJaxFormula(elementId, formula) {
     const element = document.getElementById(elementId);
     if (!element) {
         console.error(`Element with ID ${elementId} not found`);
         return;
     }
     
-    // Set the formula HTML directly
-    element.innerHTML = '<div class="math-formula">$$' + formula + '$$</div>';
-    console.log('Inserted formula HTML:', element.innerHTML);
+    // Clear the element and set the formula
+    element.innerHTML = '';
     
-    // Render the formula
-    if (window.MathJax && window.MathJax.Hub) {
-        console.log(`Rendering LaTeX formula in ${elementId}:`, formula);
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, element]);
+    // Create a proper MathJax container
+    const mathContainer = document.createElement('div');
+    mathContainer.className = 'math-formula-container';
+    mathContainer.style.textAlign = 'center';
+    mathContainer.style.padding = '15px';
+    mathContainer.style.margin = '15px 0';
+    mathContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+    mathContainer.style.borderRadius = '8px';
+    mathContainer.style.border = '1px solid rgba(212, 175, 55, 0.3)';
+    
+    // Set the formula with proper delimiters
+    mathContainer.innerHTML = `$$${formula}$$`;
+    
+    element.appendChild(mathContainer);
+    
+    // Process with MathJax
+    if (window.MathJax && window.MathJax.Hub && window.mathJaxReady) {
+        console.log(`Rendering formula: ${formula}`);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, mathContainer]);
         MathJax.Hub.Queue(() => {
-            console.log('MathJax rendering completed for formula');
+            console.log('Formula rendering completed');
         });
     } else {
-        console.warn('MathJax not available for formula rendering');
+        console.warn('MathJax not ready for formula rendering');
     }
 }
 
-// Function to directly fix the formula in the DOM after it's loaded
-window.fixFormula = function() {
-    console.log('🔶 ATTEMPTING TO FIX FORMULA DIRECTLY IN THE DOM');
-    
-    // Find all math formula elements
-    const formulas = document.querySelectorAll('.math-formula');
-    console.log(`Found ${formulas.length} formula elements`);
-    
-    formulas.forEach((formula, index) => {
-        console.log(`Formula ${index} content:`, formula.innerHTML);
-        
-        // Check if it contains the mangled formula
-        if (formula.innerHTML.includes('lim_{x o 0} rac{sin(x) - x cos(x)}{x^3}')) {
-            console.log(`Found mangled formula in element ${index}, fixing...`);
-            
-            // Replace with correct formula
-            formula.innerHTML = '$$\\lim_{x \\to 0} \\frac{\\sin(x) - x \\cos(x)}{x^3}$$';
-            
-            // Force MathJax to reprocess
-            if (window.MathJax && window.MathJax.Hub) {
-                MathJax.Hub.Queue(['Typeset', MathJax.Hub, formula]);
-            }
-        }
-    });
-    
-    return 'Formula fix attempted';
-};
-
-// FIXED: This function now properly uses currentChapterData instead of hardcoded formulas
+// FIXED: Enhanced puzzle display with proper MathJax handling
 function showPuzzle() {
     console.log('🔴 SHOWING PUZZLE FOR CHAPTER:', currentChapterData.CHAPTER_NUMBER);
     console.log('🔴 PUZZLE FORMULA:', currentChapterData.PUZZLE_FORMULA_DISPLAY);
@@ -366,7 +356,7 @@ function showPuzzle() {
                 <div class="dialogue-speaker">🔮 ${currentChapterData.PUZZLE_GUARDIAN_NAME}:</div>
                 "${currentChapterData.PUZZLE_CHALLENGE_DIALOGUE}"
                 <br><br>
-                <div style="text-align: center; font-family: 'Times New Roman', serif; font-size: 1.2em; color: #da70d6; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                <div id="puzzleFormulaDisplay" style="text-align: center; font-family: 'Times New Roman', serif; font-size: 1.2em; color: #da70d6; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin: 10px 0;">
                     ${currentChapterData.PUZZLE_FORMULA_DISPLAY}
                 </div>
                 "${currentChapterData.PUZZLE_CLARIFICATION_DIALOGUE}"
@@ -383,13 +373,10 @@ function showPuzzle() {
     
     puzzleBox.classList.remove('hidden');
     
-    // FIXED: Clear the puzzle text completely and rebuild it with current chapter data
-    puzzleText.innerHTML = '';
-    
-    // Set the puzzle content using the current chapter data
+    // Clear and rebuild puzzle text with proper MathJax containers
     puzzleText.innerHTML = `
         <strong>${currentChapterData.PUZZLE_TITLE}:</strong><br><br>
-        <div style='text-align: center; font-family: "Times New Roman", serif; font-size: 1.3em; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; margin: 15px 0;'>
+        <div id="puzzleFormulaContainer" style='text-align: center; font-family: "Times New Roman", serif; font-size: 1.3em; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; margin: 15px 0;'>
             ${currentChapterData.PUZZLE_FORMULA_DISPLAY}
         </div>
         <em>${currentChapterData.PUZZLE_INSTRUCTIONS}</em><br><br>
@@ -404,27 +391,26 @@ function showPuzzle() {
     // Scroll to the puzzle
     puzzleBox.scrollIntoView({ behavior: 'smooth' });
     
-    // FIXED: Clear MathJax cache and force complete re-rendering
-    if (window.MathJax && window.MathJax.Hub) {
-        console.log('🔴 CLEARING MATHJAX CACHE AND RE-RENDERING FOR CHAPTER:', currentChapterData.CHAPTER_NUMBER);
+    // Enhanced MathJax processing with proper error handling
+    if (window.MathJax && window.MathJax.Hub && window.mathJaxReady) {
+        console.log('🔴 PROCESSING PUZZLE WITH MATHJAX FOR CHAPTER:', currentChapterData.CHAPTER_NUMBER);
         
-        // Clear MathJax's internal cache
-        if (window.MathJax.Hub.getAllJax) {
-            const jaxElements = window.MathJax.Hub.getAllJax();
-            jaxElements.forEach(jax => {
-                if (jax.Remove) jax.Remove();
-            });
-        }
-        
-        // Force complete reprocessing of both containers
-        MathJax.Hub.Queue(['Reprocess', MathJax.Hub, container]);
-        MathJax.Hub.Queue(['Reprocess', MathJax.Hub, puzzleText]);
+        // Process all math elements in the container and puzzle text
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, puzzleText]);
         MathJax.Hub.Queue(() => {
             console.log('🔴 MathJax rendering completed for chapter:', currentChapterData.CHAPTER_NUMBER);
             puzzleInput.focus();
         });
     } else {
-        console.warn('MathJax not available');
+        console.warn('MathJax not ready, will retry...');
+        // Retry after a short delay if MathJax isn't ready
+        setTimeout(() => {
+            if (window.MathJax && window.MathJax.Hub && window.mathJaxReady) {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, puzzleText]);
+            }
+        }, 1000);
         puzzleInput.focus();
     }
 }
@@ -446,8 +432,12 @@ window.testMathJax = function() {
     testDiv.style.borderRadius = '10px';
     testDiv.style.border = '2px solid #ffd700';
     
-    // Add a title
-    testDiv.innerHTML = '<h3>MathJax Test</h3><div id="test-formula"></div><button id="close-test" style="margin-top: 10px; padding: 5px;">Close</button>';
+    // Add a title and test formula
+    testDiv.innerHTML = `
+        <h3>MathJax Test</h3>
+        <div id="test-formula">$$\\lim_{x \\to 0} \\frac{\\sin(x) - x \\cos(x)}{x^3}$$</div>
+        <button id="close-test" style="margin-top: 10px; padding: 5px;">Close</button>
+    `;
     document.body.appendChild(testDiv);
     
     // Add close button functionality
@@ -455,29 +445,16 @@ window.testMathJax = function() {
         document.body.removeChild(testDiv);
     });
     
-    // Get the formula container
-    const formulaContainer = document.getElementById('test-formula');
-    
-    // Create a script element to add the formula
-    const script = document.createElement('script');
-    script.type = 'math/tex; mode=display';
-    
-    // Set a very simple formula
-    script.textContent = 'x^2';
-    
-    // Add the script to the container
-    formulaContainer.appendChild(script);
-    
     // Process with MathJax
-    if (window.MathJax && window.MathJax.Hub) {
+    if (window.MathJax && window.MathJax.Hub && window.mathJaxReady) {
         console.log('Processing test formula with MathJax');
-        MathJax.Hub.Queue(['Typeset', MathJax.Hub, formulaContainer]);
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub, testDiv]);
         MathJax.Hub.Queue(() => {
             console.log('MathJax test rendering completed');
         });
     } else {
         console.warn('MathJax not available for test');
-        formulaContainer.innerHTML = '<p style="color: red;">MathJax not available!</p>';
+        document.getElementById('test-formula').innerHTML = '<p style="color: red;">MathJax not available!</p>';
     }
     
     return 'Test initiated - check the top left of the screen';
@@ -548,7 +525,7 @@ window.renderMathJax = function(elementToProcess, retryCount = 0) {
 // Ensure MathJax is loaded and ready
 function ensureMathJax() {
     return new Promise((resolve) => {
-        if (window.MathJax && window.MathJax.typesetPromise) {
+        if (window.MathJax && window.mathJaxReady) {
             console.log('MathJax is ready');
             resolve();
         } else {
@@ -657,24 +634,15 @@ function generateGameLayout(chapterData) {
 
     document.body.appendChild(gameContainer);
     
-    // Direct MathJax rendering using the same approach as the test page
-    if (window.MathJax && window.MathJax.Hub) {
-        console.log('Directly calling MathJax.Hub.Queue for game container');
-        // Process the entire game container
+    // Enhanced MathJax processing for the entire game layout
+    if (window.MathJax && window.MathJax.Hub && window.mathJaxReady) {
+        console.log('Processing game layout with MathJax');
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, gameContainer]);
-        
-        // Also specifically process the narrative text
-        const narrativeText = document.getElementById('narrativeText');
-        if (narrativeText) {
-            console.log('Directly calling MathJax.Hub.Queue for narrative text');
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, narrativeText]);
-        }
-        
         MathJax.Hub.Queue(() => {
             console.log('MathJax rendering completed for game layout');
         });
     } else {
-        console.warn('MathJax not available for game layout rendering');
+        console.warn('MathJax not ready for game layout rendering');
     }
 
     // Add rotating Gemini images to the scene image
